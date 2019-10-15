@@ -1,0 +1,116 @@
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:/C=US/ST=Washington/L=Seattle/O=Amazon.com, Inc./CN=www.amazon.com
+   i:/C=US/O=Symantec Corporation/OU=Symantec Trust Network/CN=Symantec Class 3 Secure Server CA - G4
+ 1 s:/C=US/O=Symantec Corporation/OU=Symantec Trust Network/CN=Symantec Class 3 Secure Server CA - G4
+   i:/C=US/O=VeriSign, Inc./OU=VeriSign Trust Network/OU=(c) 2006 VeriSign, Inc. - For authorized use only/CN=VeriSign Class 3 Public Primary Certification Authority - G5
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIGmzCCBYOgAwIBAgIQHUq9qnjQmv55nUG863p2YjANBgkqhkiG9w0BAQsFADB+
+MQswCQYDVQQGEwJVUzEdMBsGA1UEChMUU3ltYW50ZWMgQ29ycG9yYXRpb24xHzAd
+BgNVBAsTFlN5bWFudGVjIFRydXN0IE5ldHdvcmsxLzAtBgNVBAMTJlN5bWFudGVj
+IENsYXNzIDMgU2VjdXJlIFNlcnZlciBDQSAtIEc0MB4XDTE2MTAzMTAwMDAwMFoX
+DTE3MTIzMTIzNTk1OVowaDELMAkGA1UEBhMCVVMxEzARBgNVBAgMCldhc2hpbmd0
+b24xEDAOBgNVBAcMB1NlYXR0bGUxGTAXBgNVBAoMEEFtYXpvbi5jb20sIEluYy4x
+FzAVBgNVBAMMDnd3dy5hbWF6b24uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+MIIBCgKCAQEAwlooZ3Wf+B8c1nTZj/14wCPIjyhcOV5ytEZQDbtftWixOxTpG2Sl
+k2GI1pztESpopBmbY/haM5YNWDYDHr01AQvzAqwsNyz5sX4rytkIEWI92DomKbvx
+QKry0m0Zuj9MzabZb2vHb0dbWwUl2yXn5nlfHJSfmD0TS3UFNaQzXExFnlKU/i7V
+omLEB/O9OtfJ0V2XZzbzOx3RfvTy5wmn4AxCC7nGRklNBKVa+npRl0zj+loyCaM+
+AF5YV9ZbURIuxYiZOW3u2a66VzYwCRa2EdtIbPALO/dSrFNAuaAhKqpFN0OB42d1
+6IWUOKiMiHDJL512YAJJBmfQPI7fVQtXJwIDAQABo4IDKTCCAyUwgdQGA1UdEQSB
+zDCByYIKYW1hem9uLmNvbYIIYW16bi5jb22CEXVlZGF0YS5hbWF6b24uY29tgg11
+cy5hbWF6b24uY29tgg53d3cuYW1hem9uLmNvbYIMd3d3LmFtem4uY29tghRjb3Jw
+b3JhdGUuYW1hem9uLmNvbYIRYnV5Ym94LmFtYXpvbi5jb22CEWlwaG9uZS5hbWF6
+b24uY29tgg15cC5hbWF6b24uY29tgg9ob21lLmFtYXpvbi5jb22CFW9yaWdpbi13
+d3cuYW1hem9uLmNvbTAJBgNVHRMEAjAAMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUE
+FjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwYQYDVR0gBFowWDBWBgZngQwBAgIwTDAj
+BggrBgEFBQcCARYXaHR0cHM6Ly9kLnN5bWNiLmNvbS9jcHMwJQYIKwYBBQUHAgIw
+GQwXaHR0cHM6Ly9kLnN5bWNiLmNvbS9ycGEwHwYDVR0jBBgwFoAUX2DPYZBV34RD
+FIpgKrL1evRDGO8wKwYDVR0fBCQwIjAgoB6gHIYaaHR0cDovL3NzLnN5bWNiLmNv
+bS9zcy5jcmwwVwYIKwYBBQUHAQEESzBJMB8GCCsGAQUFBzABhhNodHRwOi8vc3Mu
+c3ltY2QuY29tMCYGCCsGAQUFBzAChhpodHRwOi8vc3Muc3ltY2IuY29tL3NzLmNy
+dDCCAQYGCisGAQQB1nkCBAIEgfcEgfQA8gB3AN3rHSt6DU+mIIuBrYFocH4ujp0B
+1VyIjT0RxM227L7MAAABWBifyfEAAAQDAEgwRgIhAOnxZYIIOlu0L1nvY3+yk8Ay
+gYzt3RsoZD1Wcs5Tl+W/AiEArj03tMyYoSa1I25zrqujXDQp5GnMXoI0MHAXINWc
+EV0AdwBo9pj4H2SCvjqM7rkoHUz8cVFdZ5PURNEKZ6y7T0/7xAAAAVgYn8oaAAAE
+AwBIMEYCIQDRlQQ8KC2R/bvOeWJr0FGedxbjE4OglejZEYKSCHekRQIhALbGyJPw
+AagwlRnFD5iqE1ZzSTO6uadnKEazPJcW2sRnMA0GCSqGSIb3DQEBCwUAA4IBAQA6
+5KlsAxxtgfs05qV0ywTqM6qGzBkMIgJzJpCh9OR+X+STrfjphnLQlOwIuHxiF0oV
+phsf9oYW6TYQimBIKoFpP94WbG2ojsr39YJ6kiDhudt3ef24QnZ3AtnXM5OLVv46
+iwZst4TwdwO3/Ialn7ql3sVX7+13yscEXfwfMT0JI1yzl+vZ8tR6bc5X9HqwjuAD
+JelImPs/TxshDt3JRhbUuKcFxjaEcEtRqoGemgZgEpRnifUSBvnl01IVzb71DGWu
+Bpx0qrpruMAUU1lOJrg/rwQMSXC2lSZDiDn1cjK0z+XLi7x86N/7jW6zKh5RjSgr
+r6H7ZhiwtwpJzLsjT1CX
+-----END CERTIFICATE-----
+subject=/C=US/ST=Washington/L=Seattle/O=Amazon.com, Inc./CN=www.amazon.com
+issuer=/C=US/O=Symantec Corporation/OU=Symantec Trust Network/CN=Symantec Class 3 Secure Server CA - G4
+---
+No client certificate CA names sent
+Peer signing digest: SHA512
+Server Temp Key: ECDH, P-256, 256 bits
+---
+SSL handshake has read 3692 bytes and written 431 bytes
+---
+New, TLSv1/SSLv3, Cipher is ECDHE-RSA-AES128-GCM-SHA256
+Server public key is 2048 bit
+Secure Renegotiation IS supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+SSL-Session:
+    Protocol  : TLSv1.2
+    Cipher    : ECDHE-RSA-AES128-GCM-SHA256
+    Session-ID: E1BC95D4BE79C4955FEACE9C32A392E89D21CB468736E75064E59DB4DD8A6BB7
+    Session-ID-ctx: 
+    Master-Key: 185ADA3877A66634BBE84043BFC504BD467368A75ABF3999672C77144AF747AC3B355B3F9E3442B93D61BBDF60AEAD68
+    Key-Arg   : None
+    PSK identity: None
+    PSK identity hint: None
+    SRP username: None
+    TLS session ticket lifetime hint: 10800 (seconds)
+    TLS session ticket:
+    0000 - 25 81 3f 7f 03 e6 ca 2d-76 f9 c9 34 02 af fc 8b   %.?....-v..4....
+    0010 - 0f 98 78 ba 3e f3 f9 f9-bb c3 db a7 d8 33 c2 78   ..x.>........3.x
+    0020 - cd 6e ea fc 1a a7 6d be-d3 29 d4 e0 22 73 7f c7   .n....m..).."s..
+    0030 - cb 8c 63 43 9d 10 ec cd-95 dd bd dc 69 8a b1 c7   ..cC........i...
+    0040 - 6d 1d e1 b6 b2 e7 dd ec-dc bb d2 9e 52 96 24 fa   m...........R.$.
+    0050 - 6a 5f f6 4b 12 db 65 aa-52 42 0f ed a6 76 67 09   j_.K..e.RB...vg.
+    0060 - 97 dc e5 e7 8f c4 2f eb-26 ba b3 9f 07 33 48 74   ....../.&....3Ht
+    0070 - 4e 34 a5 27 1e 09 1a 2d-1b 2f d2 18 ea 94 99 12   N4.'...-./......
+    0080 - 68 40 36 f5 b7 42 b6 6a-9a e4 12 37 19 4d ab 63   h@6..B.j...7.M.c
+    0090 - 94 db 70 c1 9e db 8a 70-df 17 59 f3 6a cf 7f 76   ..p....p..Y.j..v
+
+    Start Time: 1505499977
+    Timeout   : 300 (sec)
+    Verify return code: 0 (ok)
+---
+HTTP/1.1 400 Bad Request
+Server: CloudFront
+Date: Fri, 15 Sep 2017 18:26:24 GMT
+Content-Type: text/html
+Content-Length: 551
+Connection: close
+X-Cache: Error from cloudfront
+Via: 1.1 0f02b0042bcba00911e5a40240b699d3.cloudfront.net (CloudFront)
+X-Amz-Cf-Id: _9iZ0PBCx8PZRMeDqfh9AFi-T8QhF-dxEOXSc_MEQVXZ7Mrrghg8IA==
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML><HEAD><META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>ERROR: The request could not be satisfied</TITLE>
+</HEAD><BODY>
+<H1>ERROR</H1>
+<H2>The request could not be satisfied.</H2>
+<HR noshade size="1px">
+Bad request.
+<BR clear="all">
+<HR noshade size="1px">
+<PRE>
+Generated by cloudfront (CloudFront)
+Request ID: _9iZ0PBCx8PZRMeDqfh9AFi-T8QhF-dxEOXSc_MEQVXZ7Mrrghg8IA==
+</PRE>
+<ADDRESS>
+</ADDRESS>
+</BODY></HTML>
