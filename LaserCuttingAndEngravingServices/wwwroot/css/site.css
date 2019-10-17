@@ -2,16 +2,21 @@
 for details on configuring this project to bundle and minify static web assets. */
 #dvHeaderContainer {
     color: darkblue;
-    text-shadow: 2px 2px orange;
+    text-shadow: 2px 2px lightgreen ;
     /*  background-image: linear-gradient(to right, white, blue );*/ /* Standard syntax (must be last) */
 }
 
 #navTop {
-    background-image: linear-gradient(to right, blue, pink  );
+    background-image: linear-gradient(to right, blue, green  );
     /* Standard syntax (must be last) */
 }
 
 #main {
+  
+}
+
+#footer{
+   
 }
 
 a.navbar-brand {
