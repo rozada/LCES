@@ -63,7 +63,7 @@ vectorEditor.init = function(svg, height, width){
         self.svgOwnerDocument = svg.ownerDocument;
     
     console.log(this.svgOwnerDocument);
-    haavar
+    
     self.svg = svg;
     self.svgPositionInfo = svg.getBoundingClientRect();
 
@@ -937,7 +937,7 @@ vectorEditor.uploadFile = function(file){
   var xhr = new XMLHttpRequest();
   var fd = new FormData();
 
-  xhr.open("POST", url, true);
+  xhr.open("POST", "/PanelTags/UploadSVG", true);
   xhr.onreadystatechange = function() {
     if (xhr.readyState == 4 && xhr.status == 200) {
     // Every thing ok, file uploaded
@@ -945,7 +945,7 @@ vectorEditor.uploadFile = function(file){
     }
   };
   
-  fd.append("upload_file", file);
+  fd.append("SVGFile", file);
   // THis is not used anywhere, curious how to get TO THIS DATA
   fd.append("fname", "shape.svg");
   xhr.send(fd);

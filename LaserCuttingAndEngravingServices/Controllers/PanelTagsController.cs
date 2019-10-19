@@ -1,18 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LaserCuttingAndEngravingServices.Controllers
 {
     public class PanelTagsController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public PanelTagsController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
         // GET: PanelTags
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadSVG()
+        {
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+
+            var file = Request.Form.Files[0];
+           
+            if (file != null)
+            {
+                var dt = DateTime.Now;
+                var fileName = "SVGUpload_" + String.Format("{0:d_M_yyyy_HH.mm.ss.fff}" + ".svg", dt);
+                var filePath = Path.Combine(contentRootPath, "UploadSvgs", fileName);
+               
+                try
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    return Json(fileName);
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                }
+            }
+            return Json("No data uploaded!");
+
         }
 
         // GET: PanelTags/Details/5

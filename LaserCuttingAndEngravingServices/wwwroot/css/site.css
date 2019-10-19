@@ -15,6 +15,10 @@ for details on configuring this project to bundle and minify static web assets. 
   
 }
 
+#main h1{
+    color: darkblue;
+}
+
 #footer{
    
 }

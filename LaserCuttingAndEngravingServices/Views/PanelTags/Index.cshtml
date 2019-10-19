@@ -6,3 +6,59 @@
 
 <h1>Panel Tags</h1>
 
+
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+        Tutorials
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Square</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#"></a>Rectangle</li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Circle</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Ellipse</a></li>
+    </ul>
+    <input type="file" id="uploadfiles" multiple="multiple" />
+
+</div>
+<div class="vector-edit">
+</div>
+<input type="button" id="my-button" onclick="makeShape()">My Button</input>
+
+<!--<input type="text" id="xCoordinate" value="test" />-->
+<svg id="svg" width="550" height="350">
+    <!--<rect width="100%" height="100%" fill="blue" fill-opacity="0.5" />
+    <text id="text" x="25" y="27" text-anchor="middle">0</text> -->
+</svg>
+
+@section Scripts{
+    <script src="~/js/vectoreditor/underscore.js"></script>
+    <script src="~/js/vectoreditor/veobjects.js"></script>
+    <script src="~/js/vectoreditor/vectoreditor.js"></script>
+    <script>
+        vectorEditor.init(document.getElementById("svg"));
+        //console.log(vector);
+        //document.getElementById("my-button").addEventListener("click", alert('test'), false);
+        function makeShape() {
+            //vectorEditor.makeCircle(document, document.getElementById("svg"));
+            console.log("Make shape");
+            //var rect =  document.getElementById('rectangle');
+            vectorEditor.exportSVG();
+        }
+
+        function changeColor(evt) {
+            window.alert(evt.target.ownerDocument);
+        };
+
+        var uploadfiles = document.querySelector('#uploadfiles');
+        uploadfiles.addEventListener('change', function () {
+            var files = this.files;
+            for (var i = 0; i < files.length; i++) {
+                uploadFile(this.files[i]); // call the function to upload the file
+            }
+        }, false);
+    </script>
+
+}
+</div>
+

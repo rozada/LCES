@@ -7,8 +7,53 @@
     <div>
 
         <h1>Custom Jobs</h1>
-        <p>We accept the following file types:  *.CDR, *.SVG</p>
-        <input type="file" value="Upload File"/>
+        &nbsp;
+        <div style="outline: 1px solid darkblue; padding: 4px; background-color: aliceblue">
+            <p>If you have a custom laser cutting/engraving job that you need done.  You can describe the job below and then upload the appropriate files. We accept various file formats:</p>
+            <p style="margin-left: 10px">
+                AI, BMP, CAL, CLK, CDR, CGM, CGZ, CMX, CPT, CPX, CSL, CUR, DES, DOC, DOCX, DSF, DRW, DST, MGX, DWG, DXF, EMF, EXE, FH, FMV,
+                FPX, GEM, GIF, HTM, ICO, IMG, JP2, JPG, MAC, MET, NAP, PCD, PCX, PDF, PIC, PCT, PLT, PNG, PP4, PP5, PPF, PPT, PS, EPS, PRN, PSD,
+                PSP, PUB, RAW, RIFF, RTF, SCT, SHW, SVG, SVGZ, TGA, TIF, TXT, VSD, WB, WQ, WK, WMV, WP4, WP5, WPD, WPG, WDS, WI, XCF, XPM , XLS
+            </p>
+        </div>
+        <div>
+            &nbsp;
+        </div>
+        <form method="post" enctype="multipart/form-data" asp-controller="CustomJobs" asp-action="FileUpload">
+            <div class="form-group">
+                <label for="form_message">Job Description *</label>
+                <textarea id="form_message" name="jobdescription" class="form-control" placeholder="description of job *" rows="4" required="required" data-error="Please describe the job needing to be done."></textarea>
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <p>Upload one or more files using this form *</p>
+                <input type="file" name="files" multiple required />
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="form_name">Firstname *</label>
+                        <input id="form_name" type="text" name="firstname" class="form-control" placeholder="Please enter your firstname *" required="required" data-error="Firstname is required.">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="form_lastname">Lastname *</label>
+                        <input id="form_lastname" type="text" name="lastname" class="form-control" placeholder="Please enter your lastname *" required="required" data-error="Lastname is required.">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="form_email">Email *</label>
+                <input id="form_email" type="email" name="useremail" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Upload" />
+            </div>
+        </form>
 
     </div>
 

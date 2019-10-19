@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using LaserCuttingAndEngravingServices.Helpers;
 
 namespace LaserCuttingAndEngravingServices.Controllers
 {
@@ -17,43 +18,27 @@ namespace LaserCuttingAndEngravingServices.Controllers
 
         [HttpPost]
         public ActionResult SendMessage(string name, string surname, string userEmail, string need, string message)
-        {
-            try
+        {           
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                string body = "Need: " + need + "\n" +
+                    "Email: " + userEmail + "\n" +
+                    message;
+
+                if (EmailEx.Send(name + " " + surname, userEmail, "Contact Page Inquiry", body))
                 {
-                    var senderEmail = new MailAddress("webadmin@luceva.biz", name + " " + surname);
-                    var receiverEmail = new MailAddress("erozada@luceva.biz", "Web Admin");
-                    var senderEmailPassword = "Leadership1!";
-                    var body = message;
-                    var smtp = new SmtpClient
-                    {
-                        Host = "smtp.luceva.biz",
-                        Port = 587,
-                        //EnableSsl = true,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential(senderEmail.Address, senderEmailPassword)
-                    };
-                    using (var mess = new MailMessage(senderEmail, receiverEmail)
-                    {
-                        Subject = "Web Inquiry",
-                        Body = "Need: " + need + "\n" +
-                        "Email: " + userEmail + "\n" +
-                        body
-                    })
-                    {
-                        smtp.Send(mess);
-                    }
-                    return View("SendMessage","The following message was sent successfully: \n" + body);
+                    return View("SendMessage", "The following message was sent successfully: \n" + message);
                 }
-                return View("SendMessage","We were unable to send your message.");
+                else
+                {
+                    return View("SendMessage", "We were unable to send your message due to internal errors.");
+                }
+                  
             }
-            catch (Exception ex)
+            else
             {
-                return View("SendMessage","An error was encountered when transmitting your message.");
-                ViewBag.Error = ex.Message;
-            }
+                return View("SendMessage", "We were unable to send your message due to input validation errors.");
+            }          
         }
     }
 }

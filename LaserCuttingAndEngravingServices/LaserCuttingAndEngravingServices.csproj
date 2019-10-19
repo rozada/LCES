@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -12,6 +12,17 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\vectoreditor\underscore.js" />
+    <None Include="wwwroot\js\vectoreditor\ve.css" />
+    <None Include="wwwroot\js\vectoreditor\vectoreditor.js" />
+    <None Include="wwwroot\js\vectoreditor\veobjects.js" />
   </ItemGroup>
 
 </Project>
