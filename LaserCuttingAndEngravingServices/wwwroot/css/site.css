@@ -93,3 +93,28 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/* vector editor styles */
+.text-edit {
+    border-style: none;
+    border-width: 0px;
+}
+
+#tbdiv {
+    position: absolute;
+    z-index: 9;
+    background: transparent;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+}
+
+#tbdivheader {
+    padding: 5px;
+    cursor: move;
+    z-index: 10;
+    background: transparent;
+    filter: alpha(opacity=50);
+    opacity: .5;
+    color: #000;
+}

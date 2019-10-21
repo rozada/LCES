@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\vectoreditor\underscore.js" />
-    <None Include="wwwroot\js\vectoreditor\ve.css" />
-    <None Include="wwwroot\js\vectoreditor\vectoreditor.js" />
-    <None Include="wwwroot\js\vectoreditor\veobjects.js" />
+    <None Include="wwwroot\js\_vectoreditor\underscore.js" />
+    <None Include="wwwroot\js\_vectoreditor\ve.css" />
+    <None Include="wwwroot\js\_vectoreditor\vectoreditor.js" />
+    <None Include="wwwroot\js\_vectoreditor\veobjects.js" />
   </ItemGroup>
 
 </Project>
