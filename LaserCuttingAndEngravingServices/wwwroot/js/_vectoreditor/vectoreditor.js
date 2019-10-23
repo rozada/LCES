@@ -863,6 +863,10 @@ vectorEditor.exportSVG = function() {
   console.log("Normalized height: " + normalizedHeight);
   clonedShapeBeingEdited.setAttributeNS(null, "width", normalizedWidth + "in");
   clonedShapeBeingEdited.setAttributeNS(null, "height", normalizedHeight + "in");
+
+
+// TOKNOW: WHY ONT JUST CLONE THE CURRENT SVG DOC?
+    // create and configure svg element
   var svg = document.createElement('svg');
   svg.setAttribute("width", "32in");    // eventually this will be the size of the laser bed
   svg.setAttribute("height", "20in"); // eventually this will be the size of the laser bed

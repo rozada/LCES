@@ -9,6 +9,7 @@
         var svg;
         var svgOwnerDocument;
         var currentShape;
+        var currentText;
     };
 
     //#region Methods
@@ -22,15 +23,28 @@
         shape.setAttributeNS(null, "height", height);
         shape.setAttributeNS(null, "fill", fill);
         shape.setAttributeNS(null, "stroke", stroke);
-        shape.setAttributeNS(null, "class", "rectangle")
+        shape.setAttributeNS(null, "class", "rectangle")       
+
         self.svg.appendChild(shape);
+
+        var text = this.svgOwnerDocument.createElementNS(svgns, "text");
+        text.setAttributeNS(null, "x", x + 25);
+        text.setAttributeNS(null, "y", y + 25);
+        text.setAttribute("font-size", "18px");
+        text.textContent = "text";
+        
+        self.svg.appendChild(text);
+
+        console.log(text);
         self.currentShape = shape;
+        self.currentText = text;
     }
 
     VectorEditor.prototype.exportSVG = function () {
         var self = this;
-        var shapeBeingEdited = this.currentShape;
-        var clonedShapeBeingEdited = shapeBeingEdited.cloneNode(true);
+        var textTool = global.document.getElementsByClassName('text-edit')[0];
+        var shapeBeingEdited = self.currentShape;
+        var clonedShapeBeingEdited = self.svg.cloneNode(true);/*shapeBeingEdited.cloneNode(true)*/;
         clonedShapeBeingEdited.setAttributeNS(null, "x", "3in");
         clonedShapeBeingEdited.setAttributeNS(null, "y", "3in");
         var normalizedWidth = 4;//TODO: this will be selected nameplate dims  //clonedShapeBeingEdited.getAttributeNS(null, "width") / self.gridLineSpacing;
@@ -39,14 +53,18 @@
         console.log("Normalized height: " + normalizedHeight);
         clonedShapeBeingEdited.setAttributeNS(null, "width", normalizedWidth + "in");
         clonedShapeBeingEdited.setAttributeNS(null, "height", normalizedHeight + "in");
+
         var svg = document.createElement('svg');
         svg.setAttribute("width", "32in");    // eventually this will be the size of the laser bed
         svg.setAttribute("height", "20in"); // eventually this will be the size of the laser bed
 
+        
         svg.appendChild(clonedShapeBeingEdited);
 
         // first create a clone of our svg node so we don't mess the original one
         var clone = svg.cloneNode(true);
+        
+
         // parse the styles
         self.parseStyles(clone);
 

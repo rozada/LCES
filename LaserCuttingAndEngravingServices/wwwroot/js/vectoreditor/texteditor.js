@@ -1,7 +1,8 @@
 ﻿(function (global) {
-    var element = window.document.getElementsByClassName('text-edit')[0];
+    var textTool = window.document.getElementsByClassName('text-edit')[0];
+    global.textTool = textTool;
     //Make the DIV element draggagle:
-    dragElement(element);
+    dragElement(textTool);
 
     function dragElement(elmnt) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -42,30 +43,36 @@
             document.onmouseup = null;
             document.onmousemove = null;
         }
-
     }
-    var textInput = $(element).children('textarea:first');
+    var textInput = $(textTool).children('textarea:first');
     console.log("textInput: ");
     console.log(textInput); 
     var svg;
     if (!global.vectorEditor.svg) {
-        var svg = window.document.getElementsByTagName("svg")[0];
+        svg = window.document.getElementsByTagName("svg")[0];
+        
         global.vectorEditor.svg = svg;
     }
     else {
         svg = global.vectorEditor.svg;
     }
-
-
+    
     svg.addEventListener("click", function () {
-        $(textInput).css("border-style", "none");
+        $(textInput).css("border-style", "none");  
+        console.log("textInput:");
+        console.log(textInput);
+        //var rect = txt.getBoundingClientRect();
+        var offset = $(textInput).offset();
+        var textToolOffset = $(textTool).offset();
+        var svgOffset = $(svg).offset();
+        console.log(textToolOffset);
+        global.vectorEditor.currentText.setAttributeNS(null, "x", textToolOffset.left - offset.left - svgOffset.offsetLeft);
+        global.vectorEditor.currentText.setAttributeNS(null, "y", textToolOffset.top - offset.top - svgOffset.top);
+        global.vectorEditor.currentText.textContent = $(textInput).val();
     });
 
     $(textInput).click(function () {
         $(this).css("border-style", "dashed");
     });
-
-
-    //textInput.addEventListener("blur", function () {  });
 
 })(window);
