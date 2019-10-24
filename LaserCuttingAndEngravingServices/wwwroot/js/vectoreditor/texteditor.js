@@ -62,12 +62,24 @@
         console.log("textInput:");
         console.log(textInput);
         //var rect = txt.getBoundingClientRect();
-        var offset = $(textInput).offset();
+        var textInputOffset = $(textInput).offset();
+        console.log("textInput offset: ");
+        console.log(textInputOffset);
         var textToolOffset = $(textTool).offset();
-        var svgOffset = $(svg).offset();
+        console.log("textTool offset: ");
         console.log(textToolOffset);
-        global.vectorEditor.currentText.setAttributeNS(null, "x", textToolOffset.left - offset.left - svgOffset.offsetLeft);
-        global.vectorEditor.currentText.setAttributeNS(null, "y", textToolOffset.top - offset.top - svgOffset.top);
+
+        var svgOffset = $(svg).offset();
+        console.log("svgoffset: ");
+        console.log(svgOffset);
+        var svgTextOffset = {
+            left: textInputOffset.left - svgOffset.left,
+            top: textInputOffset.top - svgOffset.top
+        }
+        console.log("svgTextOffset: ");
+        console.log(svgTextOffset);
+        global.vectorEditor.currentText.setAttributeNS(null, "x", svgTextOffset.left);
+        global.vectorEditor.currentText.setAttributeNS(null, "y", svgTextOffset.top);
         global.vectorEditor.currentText.textContent = $(textInput).val();
     });
 
@@ -75,4 +87,54 @@
         $(this).css("border-style", "dashed");
     });
 
+    function resizeIt() {
+        var str = $('#txt').val();
+        
+        var cols = parseInt($('#txt').attr('cols'));
+        var fontSize = $('#txt').css('font-size');
+        var lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.5);
+        
+        var lines = $('#txt').val().split("\n");
+        var linecount = 0;
+       
+        console.log("cols: " + cols);
+        for (var i = 0; i < lines.length; i++) {
+            //code here using lines[i] which will give you each line
+            var lineTemp;
+            var index = 0;
+            // need a while statemnet
+            console.log('lines[0]: ' + lines[0]);
+            
+            while (index < lines[i].length) {
+                lineTemp = lines[i].substring(index, cols);
+                index = index + cols;
+                console.log("index: " + index + " cols: " + cols);
+                linecount++;
+                console.log("linetemp (inside while): " + lineTemp);
+            }            
+            //lineTemp = lines[i].substring(index);
+
+            //linecount++;
+            //console.log("linetemp: " + lineTemp);
+            console.log("linecount: " + linecount);
+
+        }
+
+        /*$A(str.split("\n")).each(function (l) {
+            linecount += Math.ceil(l.length / cols); // Take into account long lines
+        })*/
+        
+        var scrollHeight = $('#txt').get(0).scrollHeight;
+        console.log("textarea: " + scrollHeight);
+        var numberOfLines = Math.floor(scrollHeight / lineHeight);
+        $('#txt').attr('rows', linecount);
+    };
+
+    // You could attach to keyUp, etc. if keydown doesn't work
+    $('#txt').keydown(function () {
+        
+       // resizeIt();
+    });
+
+   // resizeIt(); //Initial on load
 })(window);

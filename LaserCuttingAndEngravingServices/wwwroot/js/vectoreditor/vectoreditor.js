@@ -30,8 +30,12 @@
         var text = this.svgOwnerDocument.createElementNS(svgns, "text");
         text.setAttributeNS(null, "x", x + 25);
         text.setAttributeNS(null, "y", y + 25);
+        //text.setAttribute("width", "150");
+        //text.setAttribute("height", "75"); 
+        text.setAttribute("textLength", "200px");
         text.setAttribute("font-size", "18px");
-        text.textContent = "text";
+        text.setAttribute("fill", "green");
+        text.textContent = "text\ntext2";
         
         self.svg.appendChild(text);
 
