@@ -1,7 +1,8 @@
 ﻿(function (global) {
+    var svgns = "http://www.w3.org/2000/svg";
     var textTool = window.document.getElementsByClassName('text-edit')[0];
     global.textTool = textTool;
-    //Make the DIV element draggagle:
+    //Make the DIV element draggable:
     dragElement(textTool);
 
     function dragElement(elmnt) {
@@ -44,9 +45,6 @@
             document.onmousemove = null;
         }
     }
-    var textInput = $(textTool).children('textarea:first');
-    console.log("textInput: ");
-    console.log(textInput); 
     var svg;
     if (!global.vectorEditor.svg) {
         svg = window.document.getElementsByTagName("svg")[0];
@@ -56,6 +54,22 @@
     else {
         svg = global.vectorEditor.svg;
     }
+
+    var textInput = $('#txt');
+
+    function centerTextEditor() {
+        
+        var textInputWidth = $(textInput).width();
+        var textInputHeight = $(textInput).height();
+        var rcWidth = global.vectorEditor.rectWidth;
+        var rcHeight = global.vectorEditor.rectHeight;
+        var leftPos = (rcWidth / 2 - textInputWidth / 2) + "px";
+        var topPos = (rcHeight / 2 - textInputHeight / 2) + "px";
+        console.log(leftPos);
+        $(textTool).css({ left: leftPos, top: topPos });
+    }
+    global.vectorEditor.centerTextEditor = centerTextEditor;
+
     
     svg.addEventListener("click", function () {
         $(textInput).css("border-style", "none");  
@@ -80,12 +94,104 @@
         console.log(svgTextOffset);
         global.vectorEditor.currentText.setAttributeNS(null, "x", svgTextOffset.left);
         global.vectorEditor.currentText.setAttributeNS(null, "y", svgTextOffset.top);
-        global.vectorEditor.currentText.textContent = $(textInput).val();
+        setSVGTextContent($(textInput).text(), svgTextOffset.left, svgTextOffset.top);
     });
 
     $(textInput).click(function () {
         $(this).css("border-style", "dashed");
     });
+
+
+    function setSVGTextContent(text, left, top) {
+        var lines = text.split("\n");
+       
+        console.log("parse text input: " + lines.length);
+        var maxWidth = 0;
+
+        for (var i = 0; i < lines.length; i++) {
+            console.log('lines[0]: ' + lines[i]);
+            var currentText = global.vectorEditor.currentText;
+            var textAlignment = $(textInput).css("text-align");
+            console.log("TA: " + textAlignment);
+            
+            if (i === 0) {
+                currentText.textContent = lines[i];
+                var rect = currentText.getBoundingClientRect();
+                maxWidth = rect.width;
+            }
+            else {
+                addTextLine(currentText, lines[i], left, top, i, maxWidth, textAlignmentToTextAnchor(textAlignment));
+            }
+
+
+        }
+    }
+
+    function textAlignmentToTextAnchor(textAlignment) {
+        switch (textAlignment) {
+            case "left":
+                return "start";
+                break;
+            case "center":
+                return "middle";
+                break;
+            case "right":
+                return "end";
+                break;
+            default:
+                console.log("Unknown textAlignment type");
+        }
+    }
+
+    function xPositionForSVGText(textAnchor, line, maxWidth) {
+        switch (textAnchor) {
+            case "start":
+                return 0;
+                break;
+            case "middle":
+                var tempTspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
+                tempTspan.setAttributeNS(null, "x", 0);
+                tempTspan.setAttributeNS(null, "y", 0);        // TODO:  REMOVE 18 AND Base this on font size        /
+                tempTspan.textContent = line;
+
+                var rect = tempTspan.getBoundingClientRect();
+
+                if (rect.width > maxWidth) {
+                    maxWidth = rect.width;
+                }                
+                return maxWidth / 2;
+            case "end":
+                return ;
+                break;
+            default:
+                console.log("Unknown textAlignment type");
+        }
+    }
+    
+
+    function addTextLine(currentText, line, left, top, lineNum, maxWidth, textAnchor) {
+        // tempTspan is only used to calculate the center point for each line item
+        var tempTspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
+        tempTspan.setAttributeNS(null, "x", 0);
+        tempTspan.setAttributeNS(null, "y", 0);        // TODO:  REMOVE 18 AND Base this on font size        /
+        tempTspan.textContent = line;
+        
+        var rect = tempTspan.getBoundingClientRect();
+        
+        if (rect.width > maxWidth) {
+            maxWidth = rect.width;
+        }
+        var xPosition = xPositionForSVGText(textAnchor, line, maxWidth);// maxWidth / 2;        
+
+        var tspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
+        tspan.setAttributeNS(null, "x", (left + xPosition) + "px");  // we calculate the width first from the tempTspan
+        tspan.setAttributeNS(null, "y", (top + (lineNum * 18)) + "px");        // TODO:  REMOVE 18 AND Base this on font size
+        tspan.setAttributeNS(null,"text-anchor", textAnchor);// // TODO: EMULATE THE SPAN
+        tspan.setAttributeNS(null,"alignment-baseline", "central");
+        tspan.textContent = line;
+
+        currentText.appendChild(tspan);
+    }
 
     function resizeIt() {
         var str = $('#txt').val();
@@ -131,10 +237,11 @@
     };
 
     // You could attach to keyUp, etc. if keydown doesn't work
-    $('#txt').keydown(function () {
+    /*$('#txt').keydown(function () {
         
        // resizeIt();
-    });
+    });*/
+   // $('#txt').autosize();
 
    // resizeIt(); //Initial on load
 })(window);

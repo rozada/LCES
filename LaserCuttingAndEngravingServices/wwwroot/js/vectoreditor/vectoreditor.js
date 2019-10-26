@@ -10,12 +10,16 @@
         var svgOwnerDocument;
         var currentShape;
         var currentText;
+        var rectWidth;
+        var rectHeight;
     };
 
     //#region Methods
     VectorEditor.prototype.createRectangle = function (x, y, width, height, fill, stroke) {
         var self = this;
-        console.log("THis is " + this);
+        self.rectWidth = width;
+        self.rectHeight = height;
+
         var shape = this.svgOwnerDocument.createElementNS(svgns, "rect");
         shape.setAttributeNS(null, "x", x);
         shape.setAttributeNS(null, "y", y);
@@ -24,7 +28,7 @@
         shape.setAttributeNS(null, "fill", fill);
         shape.setAttributeNS(null, "stroke", stroke);
         shape.setAttributeNS(null, "class", "rectangle")       
-
+        shape.setAttribute("id", "rect");
         self.svg.appendChild(shape);
 
         var text = this.svgOwnerDocument.createElementNS(svgns, "text");
@@ -32,10 +36,10 @@
         text.setAttributeNS(null, "y", y + 25);
         //text.setAttribute("width", "150");
         //text.setAttribute("height", "75"); 
-        text.setAttribute("textLength", "200px");
+        //text.setAttribute("textLength", "200px");
         text.setAttribute("font-size", "18px");
         text.setAttribute("fill", "green");
-        text.textContent = "text\ntext2";
+        text.textContent = "(place holder)";
         
         self.svg.appendChild(text);
 

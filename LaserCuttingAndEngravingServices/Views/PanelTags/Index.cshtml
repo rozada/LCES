@@ -10,14 +10,21 @@
 <div class="vector-edit">
 </div>
 
-<svg id="svg" width="550" height="350" style="border: .5px solid black;">
+<div id="dvSVGContainer">
+    <svg id="svg" width="550" height="350">
 
-    <div id="tbdiv" class="text-edit">
-        <div id="tbdivheader">MOVE</div>
-        <textarea style="border-style: dotted; background: transparent; font-size: 18px;" id="txt" type="text" cols="12" rows="1">Charles</textarea>
+        <div id="tbdiv" class="text-edit">
+            <div id="tbdivheader">MOVE</div>
+            <div class="editable">
+                <span class="editable" contenteditable="true" id="txt">Charles</span>                
+            </div>
+        </div>
+    </svg>
+</div>
 
-    </div>
-</svg>
+<!--<div class="editable">
+    <span class="editable" contenteditable="true">abcde</span>
+</div>-->
 
 <div>
     <input type="button" id="btnExportSVG" value="Export SVG" />
@@ -25,11 +32,12 @@
 
 @section Scripts{
     <script src="~/js/vectoreditor/underscore.js"></script>
-    <script src="~/js/jquery.autosize.min.js</script>
+    <script src="~/js/jquery/jquery.autosize.min.js"></script>
     <script src="~/js/vectoreditor/vectoreditor.js"></script>
     <script src="~/js/vectoreditor/texteditor.js"></script>
     <script>
         vectorEditor.createRectangle(0, 0, 400, 200, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
+        vectorEditor.centerTextEditor();
         $("#btnExportSVG").click(function () {
             vectorEditor.exportSVG();
         });

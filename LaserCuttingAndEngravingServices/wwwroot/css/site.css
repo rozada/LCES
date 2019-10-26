@@ -95,10 +95,25 @@ body {
 }
 
 
-/* vector editor styles */
+/* svg/vector editor styles */
+
+    /* we need this container to anchor the draggable edit box */
+#dvSVGContainer {
+    position: relative;
+}
+
+
+svg {
+    border: .5px solid black; 
+    position: relative;
+}
+
 .text-edit {
     border-style: none;
     border-width: 0px;
+    position: absolute;    
+    left: 0px;
+    top: 0px;
 }
 
 #tbdiv {
@@ -117,4 +132,17 @@ body {
     filter: alpha(opacity=50);
     opacity: .5;
     color: #000;
+}
+
+.editable span {
+    border: dotted 1px black;    
+    background: transparent;
+    font-size: 18px;
+    line-height: 18px;
+    white-space: pre-line;
+    text-align: center;
+}
+
+.editable div {
+    max-width: 200px;
 }
