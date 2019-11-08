@@ -72,7 +72,9 @@
 
     
     svg.addEventListener("click", function () {
+        // stop displaying the border around the input box
         $(textInput).css("border-style", "none");  
+
         console.log("textInput:");
         console.log(textInput);
         //var rect = txt.getBoundingClientRect();
@@ -122,8 +124,6 @@
             else {
                 addTextLine(currentText, lines[i], left, top, i, maxWidth, textAlignmentToTextAnchor(textAlignment));
             }
-
-
         }
     }
 
@@ -159,10 +159,19 @@
                 if (rect.width > maxWidth) {
                     maxWidth = rect.width;
                 }                
-                return maxWidth / 2;
+                return maxWidth / 2;  // this is the center point
             case "end":
-                return ;
-                break;
+                var tempTspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
+                tempTspan.setAttributeNS(null, "x", 0);
+                tempTspan.setAttributeNS(null, "y", 0);        // TODO:  REMOVE 18 AND Base this on font size        /
+                tempTspan.textContent = line;
+
+                var rect = tempTspan.getBoundingClientRect();
+
+                if (rect.width > maxWidth) {
+                    return rect.width
+                }
+                return maxWidth;  // this is the rightmost side
             default:
                 console.log("Unknown textAlignment type");
         }
@@ -193,55 +202,26 @@
         currentText.appendChild(tspan);
     }
 
-    function resizeIt() {
-        var str = $('#txt').val();
-        
-        var cols = parseInt($('#txt').attr('cols'));
-        var fontSize = $('#txt').css('font-size');
-        var lineHeight = Math.floor(parseInt(fontSize.replace('px', '')) * 1.5);
-        
-        var lines = $('#txt').val().split("\n");
-        var linecount = 0;
-       
-        console.log("cols: " + cols);
-        for (var i = 0; i < lines.length; i++) {
-            //code here using lines[i] which will give you each line
-            var lineTemp;
-            var index = 0;
-            // need a while statemnet
-            console.log('lines[0]: ' + lines[0]);
-            
-            while (index < lines[i].length) {
-                lineTemp = lines[i].substring(index, cols);
-                index = index + cols;
-                console.log("index: " + index + " cols: " + cols);
-                linecount++;
-                console.log("linetemp (inside while): " + lineTemp);
-            }            
-            //lineTemp = lines[i].substring(index);
+    $("#divLeftAlign").click(function () {
+        console.log("divLeftalign");
+        $(textInput).css('text-align', 'left');
+        $(this).addClass('text-alignment-selected');
+        $("#divCenterAlign").removeClass('text-alignment-selected');
+        $("#divRightAlign").removeClass('text-alignment-selected');
+    });
+    $("#divCenterAlign").click(function () {
+        console.log("divCenteralign");
+        $(textInput).css('text-align', 'center');
+        $(this).addClass('text-alignment-selected');
+        $("#divLeftAlign").removeClass('text-alignment-selected');
+        $("#divRightAlign").removeClass('text-alignment-selected');
+    });
+    $("#divRightAlign").click(function () {
+        console.log("divRightalign");
+        $(textInput).css('text-align', 'right');
+        $(this).addClass('text-alignment-selected');
+        $("#divLeftAlign").removeClass('text-alignment-selected');
+        $("#divCenterAlign").removeClass('text-alignment-selected');
+    });
 
-            //linecount++;
-            //console.log("linetemp: " + lineTemp);
-            console.log("linecount: " + linecount);
-
-        }
-
-        /*$A(str.split("\n")).each(function (l) {
-            linecount += Math.ceil(l.length / cols); // Take into account long lines
-        })*/
-        
-        var scrollHeight = $('#txt').get(0).scrollHeight;
-        console.log("textarea: " + scrollHeight);
-        var numberOfLines = Math.floor(scrollHeight / lineHeight);
-        $('#txt').attr('rows', linecount);
-    };
-
-    // You could attach to keyUp, etc. if keydown doesn't work
-    /*$('#txt').keydown(function () {
-        
-       // resizeIt();
-    });*/
-   // $('#txt').autosize();
-
-   // resizeIt(); //Initial on load
 })(window);

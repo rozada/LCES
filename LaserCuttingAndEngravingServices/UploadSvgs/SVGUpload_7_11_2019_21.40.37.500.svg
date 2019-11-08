@@ -1,0 +1,16 @@
+ <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/1999/xhtml" width="32in" height="20in">
+<defs xmlns="http://www.w3.org/2000/svg">
+<style xmlns="http://www.w3.org/1999/xhtml">*, ::after, ::before { box-sizing: border-box; }
+svg { overflow: hidden; vertical-align: middle; }
+</style>
+<style xmlns="http://www.w3.org/1999/xhtml">svg { border: 0.5px solid black; border-image: none; position: relative; }
+</style>
+</defs>
+<svg xmlns="http://www.w3.org/2000/svg" id="svg" x="3in" y="3in" width="4in" height="2in">
+
+        <rect class="rectangle" id="rect" fill="rgb(255, 0, 0)" stroke="rgb(0, 0, 0)" x="0" y="0" width="400" height="200"/>
+<text font-size="18px" fill="green" x="166" y="72.62">Charles in <tspan alignment-baseline="central" text-anchor="middle" x="207.29px" y="90.62px">charge</tspan>
+</text>
+</svg>
+</svg>

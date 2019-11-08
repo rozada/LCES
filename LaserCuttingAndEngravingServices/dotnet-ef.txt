@@ -1,0 +1,33 @@
+﻿Usage: dotnet tool install [options] <PACKAGE_ID>
+
+Arguments:
+  <PACKAGE_ID>   The NuGet Package Id of the tool to install.
+
+Options:
+  -g, --global              Install the tool for the current user.
+  --local                   Install the tool and add to the local tool manifest (default).
+  --tool-path <PATH>        The directory where the tool will be installed. The directory will be created if it does not exist.
+  --version <VERSION>       The version of the tool package to install.
+  --configfile <FILE>       The NuGet configuration file to use.
+  --tool-manifest <PATH>    Path to the manifest file.
+  --add-source <SOURCE>     Add an additional NuGet package source to use during installation.
+  --framework <FRAMEWORK>   The target framework to install the tool for.
+  --disable-parallel        Prevent restoring multiple projects in parallel.
+  --ignore-failed-sources   Treat package source failures as warnings.
+  --no-cache                Do not cache packages and http requests.
+  --interactive             Allows the command to stop and wait for user input or action (for example to complete authentication).
+  -h, --help                Show command line help.
+  -v, --verbosity <LEVEL>   Set the MSBuild verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+PM> dotnet tool install -g dotnet-ef
+Since you just installed the .NET Core SDK, you will need to reopen the Command Prompt window before running the tool you installed.
+You can invoke the tool using the following command: dotnet-ef
+Tool 'dotnet-ef' (version '3.0.0') was successfully installed.
+PM> pwd
+
+Path                       
+
+
+PM> dotnet tool install -g dotnet-ef --version 3.0.0
+Since you just installed the .NET Core SDK, you will need to reopen the Command Prompt window before running the tool you installed.
+You can invoke the tool using the following command: dotnet-ef
+Tool 'dotnet-ef' (version '3.0.0') was successfully installed.

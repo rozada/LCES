@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using LaserCuttingAndEngravingServices.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaserCuttingAndEngravingServices
 {
@@ -24,6 +27,13 @@ namespace LaserCuttingAndEngravingServices
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration["Data:LaserProducts:ConnectionString"]));
+            services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +51,7 @@ namespace LaserCuttingAndEngravingServices
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -51,7 +61,13 @@ namespace LaserCuttingAndEngravingServices
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "product",
+                    pattern: "{controller=Product}/{action=List}/{id?}");
             });
+
+            SeedData.EnsurePopulated(app);
+           
         }
     }
 }
