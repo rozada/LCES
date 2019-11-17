@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http;
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,31 +8,75 @@
 <h1>Panel Tags</h1>
 
 
-<div class="vector-edit">
-</div>
+<label for="selPlateDimenions">Select Dimensions</label>
+<select id="selPlateDimensions">
+    <option value="1,1">1" x 1"</option>
+    <option value="1,2">1" x 2"</option>
+    <option value="1,3">1" x 3"</option>
+    <option value="1,4">1" x 4"</option>
+    <option value="2,1">2" x 1"</option>
+    <option value="2,2">2" x 2"</option>
+    <option value="2,3">2" x 3"</option>
+    <option value="2,4">2" x 4"</option>
+    <option value="2,5">2" x 5"</option>
+    <option value="2,6">2" x 6"</option>
+    <option value="2,7">2" x 7"</option>
+    <option value="2,8">2" x 8"</option>
+    <option value="2,9">2" x 9"</option>
+    <option value="2,10">2" x 10"</option>
+    <option value="3,1">3" x 1"</option>
+    <option value="3,2">3" x 2"</option>
+    <option value="3,3">3" x 3"</option>
+    <option value="3,4">3" x 4"</option>
+    <option value="3,5">3" x 5"</option>
+    <option value="3,6">3" x 6"</option>
+    <option value="2,7">3" x 7"</option>
+    <option value="2,8">3" x 8"</option>
+    <option value="2,9">3" x 9"</option>
+    <option value="2,10">3" x 10"</option>
+
+</select>
+
+<!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
 
 <div id="dvSVGContainer">
     <svg id="svg" width="550" height="350">
 
-        <div id="tbdiv" class="text-edit">
-            <div id="tbdivheader"><img src="~/img/move-cursor.svg" style="width:20px; height: 20px" /></div>
-            <div class="editable">
-                <span class="editable" contenteditable="true" id="txt">Charles</span>
-            </div>
-            <table style="width: 100%">
-                <tr>
-                    <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
-                    <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
-                    <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment"/></td>
-                </tr>
-            </table>
-        </div>
     </svg>
+    <div id="tbdiv" class="text-edit">
+        <div id="tbdivheader"><img src="~/img/move-cursor.svg" style="width:20px; height: 20px" /></div>
+        <div class="editable" style="font-size: 18px; font-family: Courier New">
+            <span class="editable" contenteditable="true" id="txt">Charles</span>
+        </div>
+        <table style="width: 100%;">
+            <tr>
+                <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
+                <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
+                <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <div>
     <input type="button" id="btnExportSVG" value="Export SVG" />
+    <input type="button" id="btnAddItem3" value="Add Item 3" />
 </div>
+
+<div style="width:550px; height: 350px; border-style: solid; border-width: 1px">
+    @* <img id="svgURIDisplay">*@
+    <object id="objSVGDisplay" data="" type="image/svg+xml" width="550" height="350">
+    </object>
+
+</div>
+<p>waz up</p>
+<svg width="400" height="200">
+    <use xlink:href="#svg"></use>
+</svg>
+@*<div>
+        <img id="svgURIDisplay" src="~/img/move-cursor.svg">
+    </div>*@
+
 
 @section Scripts{
     <script src="~/js/vectoreditor/underscore.js"></script>
@@ -39,23 +84,91 @@
     <script src="~/js/vectoreditor/vectoreditor.js"></script>
     <script src="~/js/vectoreditor/texteditor.js"></script>
     <script>
-        vectorEditor.createRectangle(0, 0, 400, 200, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
+        vectorEditor.createRectangle(0, 0, 500, 150, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
         vectorEditor.centerTextEditor();
-        $("#btnExportSVG").click(function () {
-            window.location.href = "/Cart/AddToCart?productId=2&returnUrl=../PanelTags"
-            //vectorEditor.exportSVG();
+        var DPI = 96;
+        $(document).ready(function () {
+            //#region Initialization Methods 
+            function initializeUserControls() {
+                initializeDimensionsDropdown();
+            }
+
+
+            function initializeDimensionsDropdown() {
+                //var option = document.createElement("option");
+                //$("#selDimensions").
+            }
+
+
+
+            //#endregion Initialization Methods 
+
+            $("#selPlateDimensions").change(function () {
+                console.log("selPlateDimensionsChanged");
+           
+                //  var selected = $("select[name='selPlateDimenions'] option:selected");
+                var str = $(this).val();
+                var dims = str.split(',');
+                console.log("Dims: ");
+                var xPix = parseInt(dims[0]) * DPI;
+                var yPix = parseInt(dims[1]) * DPI;
+                console.log("XPIX: " + xPix);
+                vectorEditor.createRectangle(0, 0, xPix, yPix, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
+                console.log($(this).val());
+            });
+            $("#btnExportSVG").click(function () {
+
+                var imageURI = vectorEditor.exportSVG();
+                // Save dataURI to seesion here calling an mvc action
+                // use form files instead
+                //window.location.href = "/Cart/AddToCart?productId=2&returnUrl=../PanelTags";
+
+                $.ajax({
+                    url: '/Cart/AddToCartWithSVG',
+                    type: 'POST',
+                    async: false,
+                    dataType: null,
+                    data: {
+                        productId: 2,
+                        imageURI: imageURI
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
         });
-        // vectorEditor.init(document.getElementById("svg"));
-        //console.log(vector);
-        //document.getElementById("my-button").addEventListener("click", alert('test'), false);
 
-        function changeColor(evt) {
-            window.alert(evt.target.ownerDocument);
-        };
+        /******    TEST CODE ******/
+        function img_and_link() {
+            $('body').append(
+                $('<a>')
+                    .attr('href-lang', 'image/svg+xml')
+                    .attr('href', 'data:image/svg+xml;utf8,' + unescape($('#svg')[0].outerHTML))
+                    .text('Download')
+            );
+        }
 
+        $("#btnAddItem3").click(function () {
+            img_and_link();
+            //var dataURI = vectorEditor.exportSVG();
 
-
-
+            //$.ajax({
+            //    url: '/Cart/AddToCartWithSVG',
+            //    type: 'POST',
+            //    async: false,
+            //    dataType: null,
+            //    data: {
+            //        productId: 3,
+            //        dataURI: dataURI
+            //    },
+            //    success: function (data) {
+            //        console.log(data);
+            //    }
+            //});
+        });
+        /********  END TEST CODE **********/
     </script>
 
 }

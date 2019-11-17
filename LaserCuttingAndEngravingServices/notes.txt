@@ -1,1 +1,2 @@
 ﻿- Source for email form template:  Bootstrapious
+2. Find out the source for the SVG Icons

@@ -9,7 +9,7 @@
         var svg;
         var svgOwnerDocument;
         var currentShape;
-        var currentText;
+        var currentText = null;
         var rectWidth;
         var rectHeight;
     };
@@ -17,8 +17,21 @@
     //#region Methods
     VectorEditor.prototype.createRectangle = function (x, y, width, height, fill, stroke) {
         var self = this;
+
+        // if the outer svg box is too small then enlargen it
+        if (self.svg.getAttributeNS(null, "width") > width) {
+            self.svg.setAttributeNS(null, "width", width);
+        }
+
+        console.log("The height: " + self.svg.getAttributeNS(null, "height"));
+        if (self.svg.getAttributeNS(null, "height") > height) {
+            self.svg.setAttributeNS(null, "height", height);
+        }
         self.rectWidth = width;
         self.rectHeight = height;
+
+        // remove any existing rectangle
+        self.removeRectangle();
 
         var shape = this.svgOwnerDocument.createElementNS(svgns, "rect");
         shape.setAttributeNS(null, "x", x);
@@ -27,7 +40,8 @@
         shape.setAttributeNS(null, "height", height);
         shape.setAttributeNS(null, "fill", fill);
         shape.setAttributeNS(null, "stroke", stroke);
-        shape.setAttributeNS(null, "class", "rectangle")       
+        shape.setAttributeNS(null, "class", "rectangle") 
+
         shape.setAttribute("id", "rect");
         self.svg.appendChild(shape);
 
@@ -38,9 +52,10 @@
         //text.setAttribute("height", "75"); 
         //text.setAttribute("textLength", "200px");
         text.setAttribute("font-size", "18px");
+        text.setAttribute("font-family", "Courier New");
         text.setAttribute("fill", "green");
         text.textContent = "(place holder)";
-        
+        text.style.zIndex = 10;
         self.svg.appendChild(text);
 
         console.log(text);
@@ -48,23 +63,33 @@
         self.currentText = text;
     }
 
+    VectorEditor.prototype.removeRectangle = function () {
+        var self = this;
+        if (self.currentShape != null) {
+            console.log("pre remove child");
+            self.svg.removeChild(self.currentShape);
+            self.currentShape = null;
+        }
+    }
+
     VectorEditor.prototype.exportSVG = function () {
         var self = this;
         var textTool = global.document.getElementsByClassName('text-edit')[0];
         var shapeBeingEdited = self.currentShape;
+        console.log("children: " + self.svg.children[1]);
         var clonedShapeBeingEdited = self.svg.cloneNode(true);/*shapeBeingEdited.cloneNode(true)*/;
         clonedShapeBeingEdited.setAttributeNS(null, "x", "3in");
         clonedShapeBeingEdited.setAttributeNS(null, "y", "3in");
-        var normalizedWidth = 4;//TODO: this will be selected nameplate dims  //clonedShapeBeingEdited.getAttributeNS(null, "width") / self.gridLineSpacing;
-        var normalizedHeight = 2;//TODO: this will be selected nameplate dims //clonedShapeBeingEdited.getAttributeNS(null, "height") / self.gridLineSpacing;;
+        var normalizedWidth = 500;//TODO: this will be selected nameplate dims  //clonedShapeBeingEdited.getAttributeNS(null, "width") / self.gridLineSpacing;
+        var normalizedHeight = 150;//TODO: this will be selected nameplate dims //clonedShapeBeingEdited.getAttributeNS(null, "height") / self.gridLineSpacing;;
         console.log("Normalized width: " + normalizedWidth);
         console.log("Normalized height: " + normalizedHeight);
-        clonedShapeBeingEdited.setAttributeNS(null, "width", normalizedWidth + "in");
-        clonedShapeBeingEdited.setAttributeNS(null, "height", normalizedHeight + "in");
+        clonedShapeBeingEdited.setAttributeNS(null, "width", normalizedWidth + "px");
+        clonedShapeBeingEdited.setAttributeNS(null, "height", normalizedHeight + "px");
 
         var svg = document.createElement('svg');
-        svg.setAttribute("width", "32in");    // eventually this will be the size of the laser bed
-        svg.setAttribute("height", "20in"); // eventually this will be the size of the laser bed
+        svg.setAttribute("width", "1280px");    // eventually this will be the size of the laser bed
+        svg.setAttribute("height", "800px"); // eventually this will be the size of the laser bed
 
         
         svg.appendChild(clonedShapeBeingEdited);
@@ -72,7 +97,8 @@
         // first create a clone of our svg node so we don't mess the original one
         var clone = svg.cloneNode(true);
         
-
+        console.log("All Children: ");
+        console.log(self.svg.children);
         // parse the styles
         self.parseStyles(clone);
 
@@ -82,15 +108,22 @@
         var svgDoc = document.implementation.createDocument('http://www.w3.org/2000/svg', 'svg', svgDocType);
         // replace the documentElement with our clone 
         svgDoc.replaceChild(clone, svgDoc.documentElement);
+        console.log(svgDoc.children);
         // get the data
         var svgData = (new XMLSerializer()).serializeToString(svgDoc);
 
         var dataURI = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgData.replace(/></g, '>\n\r<'));
+        console.log("dataURI: " + dataURI);
+        //test code to see
+        //$("#svgURIDisplay").attr("src", dataURI); 
+        $("#objSVGDisplay").attr("data", dataURI);
+
         var blob = vectorEditor.dataURItoBlob(dataURI);
         blobOuter = blob;
         console.log("blob: " + blob);
         vectorEditor.uploadFile(blob);  // upload the file to the server
-        
+
+        return dataURI;
     }
 
     VectorEditor.prototype.parseStyles = function (svg) {

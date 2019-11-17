@@ -9,7 +9,7 @@ namespace LaserCuttingAndEngravingServices.Models
     {
         private List<CartLine> lineCollection = new List<CartLine>();
 
-        public virtual void AddItem(Product product, int quantity)
+        public virtual void AddItem(Product product, int quantity, string imageURI = "")
         {
             CartLine line = lineCollection
                 .Where(p => p.Product.ProductID == product.ProductID)
@@ -20,7 +20,8 @@ namespace LaserCuttingAndEngravingServices.Models
                 lineCollection.Add(new CartLine
                 {
                     Product = product,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    ImageURI = imageURI
                 });
             }
             else
@@ -46,6 +47,7 @@ namespace LaserCuttingAndEngravingServices.Models
         public int CartLineID { get; set; }
         public Product Product { get; set; }
         public int Quantity { get; set; }
+        public string ImageURI { get; set; }
     }
     
 }

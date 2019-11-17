@@ -34,6 +34,11 @@
                 @line.Quantity
             </td>
             <td class="text-center">
+                @if (!String.IsNullOrEmpty(line.ImageURI))
+                { 
+                <object data="@line.ImageURI" type="image/svg+xml" width="550" height="350">
+                </object>
+                }
                 @line.Product.Name
             </td>
             <td class="text-right">

@@ -336,6 +336,10 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+#Upload Folders
+Upload/
+UploadSVGs/
+
 # BeatPulse healthcheck temp database
 healthchecksdb
 /LaserCuttingAndEngravingServices/Uploads/menu-icon.png
@@ -367,3 +371,4 @@ healthchecksdb
 /LaserCuttingAndEngravingServices/UploadSvgs/SVGUpload_20_10_2019_23.42.21.079.svg
 /LaserCuttingAndEngravingServices/UploadSvgs/SVGUpload_25_10_2019_18.41.44.755.svg
 /LaserCuttingAndEngravingServices/UploadSvgs/SVGUpload_25_10_2019_08.33.06.500.svg
+/LaserCuttingAndEngravingServices/UploadSvgs

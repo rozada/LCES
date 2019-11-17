@@ -5,6 +5,7 @@
     //Make the DIV element draggable:
     dragElement(textTool);
 
+    //#region dragging functionality
     function dragElement(elmnt) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
         if (document.getElementById(elmnt.id + "header")) {
@@ -45,6 +46,7 @@
             document.onmousemove = null;
         }
     }
+    //#endregion dragging functionality
     var svg;
     if (!global.vectorEditor.svg) {
         svg = window.document.getElementsByTagName("svg")[0];

@@ -41,6 +41,20 @@ namespace LaserCuttingAndEngravingServices.Controllers
             return RedirectToAction("Index", new { returnUrl });
         }
 
+        public JsonResult AddToCartWithSVG(int productId, string imageURI = "")
+        {
+            Product product = repository.Products.FirstOrDefault(p => p.ProductID == productId);
+
+            if (product != null)
+            {
+                Cart cart = GetCart();
+                cart.AddItem(product, 1, imageURI);
+                SaveCart(cart);
+            }
+
+            return Json(new { Data = "Success" });
+        }
+
         private Cart GetCart()
         {
             Cart cart = HttpContext.Session.GetJson<Cart>("Cart") ?? new Cart();
