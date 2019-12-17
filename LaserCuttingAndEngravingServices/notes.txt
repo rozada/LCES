@@ -1,2 +1,11 @@
 ﻿- Source for email form template:  Bootstrapious
 2. Find out the source for the SVG Icons
+
+
+EDITing capabiilites
+1. Font-size
+2. Font-family
+3. Font-color
+4. Background
+5. Justifications
+6. Line Spacing

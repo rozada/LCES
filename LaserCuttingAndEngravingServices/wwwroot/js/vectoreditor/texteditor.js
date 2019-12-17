@@ -74,6 +74,9 @@
 
     
     svg.addEventListener("click", function () {
+        // this was set in the vectorEditor.js
+        var currentShape = global.vectorEditor.currentShape;
+
         // stop displaying the border around the input box
         $(textInput).css("border-style", "none");  
 
@@ -83,22 +86,28 @@
         var textInputOffset = $(textInput).offset();
         console.log("textInput offset: ");
         console.log(textInputOffset);
-        var textToolOffset = $(textTool).offset();
-        console.log("textTool offset: ");
-        console.log(textToolOffset);
+        var currentShapeOffset = $(currentShape).offset();
+        console.log("currentShape offset: ");
+        console.log(currentShapeOffset);        
 
         var svgOffset = $(svg).offset();
         console.log("svgoffset: ");
         console.log(svgOffset);
         var svgTextOffset = {
-            left: textInputOffset.left - svgOffset.left,
-            top: textInputOffset.top - svgOffset.top
+            left: textInputOffset.left - currentShapeOffset.left,
+            top: textInputOffset.top - currentShapeOffset.top
         }
         console.log("svgTextOffset: ");
         console.log(svgTextOffset);
         global.vectorEditor.currentText.setAttributeNS(null, "x", svgTextOffset.left);
         global.vectorEditor.currentText.setAttributeNS(null, "y", svgTextOffset.top);
-        setSVGTextContent($(textInput).text(), svgTextOffset.left, svgTextOffset.top);
+        /*** new test ***/
+        global.vectorEditor.currentText.setAttributeNS(null, "dy", "13");      
+
+
+        console.log("SVG Container");
+        console.log($(textInput).text());
+        setSVGTextContent($(textInput).html(), svgTextOffset.left, svgTextOffset.top);
     });
 
     $(textInput).click(function () {
@@ -107,7 +116,7 @@
 
 
     function setSVGTextContent(text, left, top) {
-        var lines = text.split("\n");
+        var lines = text.split("<br>");
        
         console.log("parse text input: " + lines.length);
         var maxWidth = 0;
@@ -185,6 +194,9 @@
         var tempTspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
         tempTspan.setAttributeNS(null, "x", 0);
         tempTspan.setAttributeNS(null, "y", 0);        // TODO:  REMOVE 18 AND Base this on font size        /
+        /*** new test ***/
+        tempTspan.setAttributeNS(null, "y", "13");      
+
         tempTspan.textContent = line;
         
         var rect = tempTspan.getBoundingClientRect();
@@ -197,6 +209,9 @@
         var tspan = global.vectorEditor.svgOwnerDocument.createElementNS(svgns, "tspan");
         tspan.setAttributeNS(null, "x", (left + xPosition) + "px");  // we calculate the width first from the tempTspan
         tspan.setAttributeNS(null, "y", (top + (lineNum * 18)) + "px");        // TODO:  REMOVE 18 AND Base this on font size
+        /*** new test ***/
+        tspan.setAttributeNS(null, "y", (top + (lineNum * 18) + 13) + "px");      
+
         tspan.setAttributeNS(null,"text-anchor", textAnchor);// // TODO: EMULATE THE SPAN
         tspan.setAttributeNS(null,"alignment-baseline", "central");
         tspan.textContent = line;
@@ -206,21 +221,21 @@
 
     $("#divLeftAlign").click(function () {
         console.log("divLeftalign");
-        $(textInput).css('text-align', 'left');
+        $("#editTextContainer").css('text-align', 'left');
         $(this).addClass('text-alignment-selected');
         $("#divCenterAlign").removeClass('text-alignment-selected');
         $("#divRightAlign").removeClass('text-alignment-selected');
     });
     $("#divCenterAlign").click(function () {
         console.log("divCenteralign");
-        $(textInput).css('text-align', 'center');
+        $("#editTextContainer").css('text-align', 'center');
         $(this).addClass('text-alignment-selected');
         $("#divLeftAlign").removeClass('text-alignment-selected');
         $("#divRightAlign").removeClass('text-alignment-selected');
     });
     $("#divRightAlign").click(function () {
         console.log("divRightalign");
-        $(textInput).css('text-align', 'right');
+        $("#editTextContainer").css('text-align',  'right');
         $(this).addClass('text-alignment-selected');
         $("#divLeftAlign").removeClass('text-alignment-selected');
         $("#divCenterAlign").removeClass('text-alignment-selected');

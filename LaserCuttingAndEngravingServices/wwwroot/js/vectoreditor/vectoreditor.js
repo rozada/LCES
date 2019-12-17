@@ -18,15 +18,10 @@
     VectorEditor.prototype.createRectangle = function (x, y, width, height, fill, stroke) {
         var self = this;
 
-        // if the outer svg box is too small then enlargen it
-        if (self.svg.getAttributeNS(null, "width") > width) {
-            self.svg.setAttributeNS(null, "width", width);
-        }
+        self.svg.setAttributeNS(null, "width", width);
 
         console.log("The height: " + self.svg.getAttributeNS(null, "height"));
-        if (self.svg.getAttributeNS(null, "height") > height) {
-            self.svg.setAttributeNS(null, "height", height);
-        }
+        self.svg.setAttributeNS(null, "height", height);
         self.rectWidth = width;
         self.rectHeight = height;
 
@@ -46,8 +41,9 @@
         self.svg.appendChild(shape);
 
         var text = this.svgOwnerDocument.createElementNS(svgns, "text");
-        text.setAttributeNS(null, "x", x + 25);
-        text.setAttributeNS(null, "y", y + 25);
+        text.setAttributeNS(null, "x", x+30);
+        text.setAttributeNS(null, "y", y + 30);
+        //text.addEventListener("mousemove", function () { window.alert("mousemove"); });
         //text.setAttribute("width", "150");
         //text.setAttribute("height", "75"); 
         //text.setAttribute("textLength", "200px");
@@ -71,6 +67,38 @@
             self.currentShape = null;
         }
     }
+
+    //#region textbox methods
+
+    VectorEditor.prototype.createTextBox = function (id) {
+        var self = this;
+        var text = this.svgOwnerDocument.createElementNS(svgns, "text");
+        text.setAttributeNS(null, "x", 30);
+        text.setAttributeNS(null, "y", 90);
+        //text.addEventListener("mousemove", function () { window.alert("mousemove"); });
+        //text.setAttribute("width", "150");
+        //text.setAttribute("height", "75"); 
+        //text.setAttribute("textLength", "200px");
+        text.setAttribute("id", id);
+        text.setAttribute("font-size", "18px");
+        text.setAttribute("font-family", "Courier New");
+        text.setAttribute("fill", "green");
+        
+        text.textContent = "(new Text Box)";
+        text.style.zIndex = 15;
+        self.svg.appendChild(text);
+
+        console.log(text);
+    }
+
+
+    VectorEditor.prototype.setTextBoxContent = function (textContent, id) {
+        var self = this;
+        // was not able to get this to work with JQuery
+        document.getElementById(id).textContent = textContent;
+    }
+
+    //#endregion text box methods
 
     VectorEditor.prototype.exportSVG = function () {
         var self = this;
