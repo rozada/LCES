@@ -91,8 +91,6 @@
 <div class="row">
     <div class="col-md-6" style="border-width: .5px; border-style: solid; min-height: 200px">
         <button id="btnAddLine">Add Text Line</button>
-        <br />
-        <label for="tblLines">Text Lines</label>
         <table id="tblLines">
             
             <tbody>
@@ -150,6 +148,7 @@
     @section Scripts{
         <script src="~/js/vectoreditor/underscore.js"></script>
         <script src="~/js/jquery/jquery.autosize.min.js"></script>
+        <script src="~/js//vectoreditor/snap.svg-min.js"></script>
         <script src="~/js/vectoreditor/vectoreditor.js"></script>
         <script src="~/js/vectoreditor/texteditor.js"></script>
         <script>
@@ -270,7 +269,10 @@
 
                     });
                     // create an instance of the input text box and add it to the SVG editor
-                    vectorEditor.createTextBox(newTextBoxId);
+
+                    var textEditClone = $(".text-edit").clone();
+                    var svgDiv = $("#dvSVGContainer"); 
+                    vectorEditor.createTextBox(rowCount + 1, textEditClone, svgDiv);
                 });
 
 
