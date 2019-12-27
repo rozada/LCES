@@ -270,8 +270,10 @@
                     });
                     // create an instance of the input text box and add it to the SVG editor
 
-                    var textEditClone = $(".text-edit").clone();
+                    var textEditClone = $("#tbdiv").clone();
                     var svgDiv = $("#dvSVGContainer"); 
+
+                    
                     vectorEditor.createTextBox(rowCount + 1, textEditClone, svgDiv);
                 });
 
