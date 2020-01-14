@@ -54,8 +54,6 @@
 @*<input id="width" type="range" name="points" min="0" max="10"/>
     <input id="height" type="range" name="points" min="0" max="10" orient="vertical"/>*@
 
-
-<!-- Clonable invisible elements -->
 <label for="selPlateBackground">Select Background:</label>
 <select id="selPlateBackground">
     <option value="#0000ff" style="background: blue;">blue</option>
@@ -64,43 +62,54 @@
     <option value="#ffffff" style="background: white;" selected>white</option>
 </select>
 
-
-<select id="selFontSize" style="visibility: collapse">
-    <option value="6">6</option>
-    <option value="8">8</option>
-    <option value="10">10</option>
-    <option value="11">11</option>
-    <option value="12">12</option>
-    <option value="14">14</option>
-    <option value="16">16</option>
-    <option value="18">18</option>
-</select>
+<!-- Clonable invisible elements -->
 
 <input id="inpLine" class="text-input" style="visibility: collapse" type="text" />
 
-<!-- Clonable invisible elements -->
+<br/>
+
+<select id="selFontSize" style="visibility: collapse">
+    <option value="6" style="font-size: 6px">6</option>
+    <option value="8" style="font-size: 8px">8</option>
+    <option value="10" style="font-size: 10px">10</option>
+    <option value="11" style="font-size: 11px">11</option>
+    <option value="12" style="font-size: 12px">12</option>
+    <option value="14" style="font-size: 14px">14</option>
+    <option value="16" style="font-size: 16px">16</option>
+    <option value="18" style="font-size: 18px" >18</option>
+</select>
 
 
 <br />
-<select id="selFontFamily" style="visibility: collapse">
+
+<select id="selFontFamily" style="visibility: collapse; width: 100px" title="Fonts">
+    <option style="font-family: Arial; font-style: italic; opacity: .3; background-color: gray; color: white" disabled selected>Select Font</option>
     <option style="font-family: Arial">Arial</option>
     <option style="font-family: Courier New">Courier New</option>
     <option style="font-family: Times New Roman">Times New Roman</option>
 </select>
 
+<br />
+<div id="dvVertCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
+<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
+
+
+<!-- Clonable invisible elements -->
+
+
 <div class="row">
-    <div class="col-md-6" style="border-width: .5px; border-style: solid; min-height: 200px">
+    <div class="col-md-6" style="border-width: .5px; border-style: solid; min-height: 50px;">
         <button id="btnAddLine">Add Text Line</button>
         <table id="tblLines">
-            
+
             <tbody>
             </tbody>
         </table>
     </div>
     <div class="col-md-6">
         <!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
-        <div id="dvSVGContainer">
-            <svg id="svg" width="550" height="350">
+        <div id="dvSVGContainer" style="border-style: solid; color: rebeccapurple; border-width: 0.5px;">
+            <svg id="svg" width="550" height="350" style="border-style: solid; color: aqua;">
             </svg>
             <div id="tbdiv" class="text-edit">
                 <div id="tbdivheader">
@@ -110,232 +119,247 @@
                     <p class="editable" contenteditable="true" id="txt">Charles</p>
                 </div>
                 @*<table style="width: 100%; border-width: .5px; border-style: solid; border-color:black;">
-                    <tr>
-                        <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
-                        <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
-                        <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
-                    </tr>
-                </table>*@
+                        <tr>
+                            <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
+                            <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
+                            <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
+                        </tr>
+                    </table>*@
             </div>
         </div>
     </div>
 </div>
 
-    
-    <div>
-        <input type="button" id="btnExportSVG" value="Export SVG" />
-        <input type="button" id="btnAddItem3" value="Add Item 3" />
-    </div>
 
-    <svg id="svg2" width="100" height="100">
-        <text x="0" y="0" dy="12" fill="black">One</text>
-    </svg>
-    <div style="width:550px; height: 350px; border-style: solid; border-width: 1px">
-        @* <img id="svgURIDisplay">*@
-        <object id="objSVGDisplay" data="" type="image/svg+xml" width="550" height="350">
-        </object>
+<div>
+    <input type="button" id="btnExportSVG" value="Export SVG" />
+    <input type="button" id="btnAddItem3" value="Add Item 3" />
+</div>
 
-    </div>
-    <p>waz up</p>
-    <svg width="400" height="200">
-        <use xlink:href="#svg"></use>
-    </svg>
-    @*<div>
-            <img id="svgURIDisplay" src="~/img/move-cursor.svg">
-        </div>*@
+<svg id="svg2" width="100" height="100">
+    <text x="0" y="0" dy="12" fill="black">One</text>
+</svg>
+<div style="width:550px; height: 350px; border-style: solid; border-width: 1px">
+    @* <img id="svgURIDisplay">*@
+    <object id="objSVGDisplay" data="" type="image/svg+xml" width="550" height="350">
+    </object>
 
-
-    @section Scripts{
-        <script src="~/js/vectoreditor/underscore.js"></script>
-        <script src="~/js/jquery/jquery.autosize.min.js"></script>
-        <script src="~/js//vectoreditor/snap.svg-min.js"></script>
-        <script src="~/js/vectoreditor/vectoreditor.js"></script>
-        <script src="~/js/vectoreditor/texteditor.js"></script>
-        <script>
-
-            //vectorEditor.createRectangle(0, 0, 500, 150, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
-            //vectorEditor.centerTextEditor();
-            var DPI = 96;
+</div>
+<p>waz up</p>
+<svg width="400" height="200">
+    <use xlink:href="#svg"></use>
+</svg>
+@*<div>
+        <img id="svgURIDisplay" src="~/img/move-cursor.svg">
+    </div>*@
 
 
-            $(document).ready(function () {
+@section Scripts{
+    <script src="~/js/vectoreditor/underscore.js"></script>
+    <script src="~/js/jquery/jquery.autosize.min.js"></script>
+    <script src="~/js//vectoreditor/snap.svg-min.js"></script>
+    <script src="~/js/vectoreditor/vectoreditor.js"></script>
+    <script src="~/js/vectoreditor/texteditor.js"></script>
+    <script>
 
+        //vectorEditor.createRectangle(0, 0, 500, 150, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
+        //vectorEditor.centerTextEditor();
+        var DPI = 96;
+
+
+        $(document).ready(function () {
+
+            setSelectedBackgroundColor();
+
+            initializeEditableRectangle();
+
+            //#region Initialization Methods
+
+            function initializeEditableRectangle() {
+
+                var str = $("#selPlateDimensions").val();
+                var dims = str.split(',');
+                var xPix = parseInt(dims[0]) * DPI;
+                var yPix = parseInt(dims[1]) * DPI;
+
+                var color = $("#selPlateBackground").find('option:selected').attr('value');
+
+                // RESET THE svg dimensions here
+                console.log("init width: " + xPix);
+
+                console.log($("#dvSVGContainer"));
+                //.css({ width: 100 }); ///.height(yPix);
+                vectorEditor.createRectangle(0, 0, xPix, yPix, color, "rgb(0, 0, 0)");
+                $("#dvSVGContainer").width(xPix).height(yPix);
+
+                vectorEditor.centerTextEditor();
+            }
+
+            function initializeUserControls() {
+                initializeDimensionsDropdown();
+            }
+
+
+            function initializeDimensionsDropdown() {
+                //var option = document.createElement("option");
+                //$("#selDimensions").
+            }
+            //#endregion Initialization Methods
+
+            $("#selPlateDimensions").change(function () {
+                console.log("selPlateDimensionsChanged");
+                initializeEditableRectangle();
+
+
+                //  var selected = $("select[name='selPlateDimenions'] option:selected");
+                /*  var str = $(this).val();
+                    var dims = str.split(',');
+                    console.log("Dims: ");
+                    var xPix = parseInt(dims[0]) * DPI;
+                    var yPix = parseInt(dims[1]) * DPI;
+                    console.log("XPIX: " + xPix);
+
+                    vectorEditor.createRectangle(0, 0, xPix, yPix, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
+                    vectorEditor.centerTextEditor();
+
+                    console.log($(this).val());*/
+            });
+
+            $("#selPlateBackground").change(function () {
+                console.log($(this).selected);
                 setSelectedBackgroundColor();
 
                 initializeEditableRectangle();
+            })
 
-                //#region Initialization Methods
+            $("#selPlateBackground option").hover(function (e) {
+                e.preventDefault();
+                console.log("mouseover");
+                console.log($(this));
+            })
 
-                function initializeEditableRectangle() {
-
-                    var str = $("#selPlateDimensions").val();
-                    var dims = str.split(',');
-                    var xPix = parseInt(dims[0]) * DPI;
-                    var yPix = parseInt(dims[1]) * DPI;
-
-                    var color = $("#selPlateBackground").find('option:selected').attr('value');
-                    console.log("The color: " + color);
-                    vectorEditor.createRectangle(0, 0, xPix, yPix, color, "rgb(0, 0, 0)");
-                    vectorEditor.centerTextEditor();
-                }
-
-                function initializeUserControls() {
-                    initializeDimensionsDropdown();
-                }
-
-
-                function initializeDimensionsDropdown() {
-                    //var option = document.createElement("option");
-                    //$("#selDimensions").
-                }
-                //#endregion Initialization Methods
-
-                $("#selPlateDimensions").change(function () {
-                    console.log("selPlateDimensionsChanged");
-                    initializeEditableRectangle();
-
-
-                    //  var selected = $("select[name='selPlateDimenions'] option:selected");
-                    /*  var str = $(this).val();
-                        var dims = str.split(',');
-                        console.log("Dims: ");
-                        var xPix = parseInt(dims[0]) * DPI;
-                        var yPix = parseInt(dims[1]) * DPI;
-                        console.log("XPIX: " + xPix);
-
-                        vectorEditor.createRectangle(0, 0, xPix, yPix, "rgb(255, 0, 0)", "rgb(0, 0, 0)");
-                        vectorEditor.centerTextEditor();
-
-                        console.log($(this).val());*/
-                });
-
-                $("#selPlateBackground").change(function () {
-                    console.log($(this).selected);
-                    setSelectedBackgroundColor();
-
-                    initializeEditableRectangle();
-                })
-
-                $("#selPlateBackground option").hover(function (e) {
-                    e.preventDefault();
-                    console.log("mouseover");
-                    console.log($(this));
-                })
-
-                function setSelectedBackgroundColor() {
-                    var color = $("#selPlateBackground").find('option:selected').attr('value');
-                    $("#selPlateBackground").css('background', color);
-                    //  var bgColor = $('#selPlateBackground :selected').css('backgroundColor');
-                    //alert(bgColor);
-                }
-
-                //#region addlines
-                $("#btnAddLine").click(function () {
-                    console.log("btn clicked");
-                    //$("#")
-                    var rowCount = $('#tblLines tr').length;
-
-                    // create the new row with id
-                    var newRow = document.createElement("tr");
-                    var newRowId = "inp" + (rowCount + 1);
-                    var newTextBoxId = "txt" + (rowCount + 1);
-                    newRow.setAttribute("id", newRowId);
-
-                    var selFontSizeClone = $("#selFontSize").clone();
-                    selFontSizeClone.css("visibility", "visible");
-
-                    var selFontFamilyClone = $("#selFontFamily").clone();
-                    selFontFamilyClone.css("visibility", "visible");
-
-                    var inpLineClone = $("#inpLine").clone();
-                    inpLineClone.css("visibility", "visible");
-                    var inpLineCloneId = "inpLine" + rowCount;
-                    inpLineClone.attr("id", inpLineCloneId);
-
-                    $(newRow).append("<td></td><td></td><td></td>")
-                    $("#tblLines > tbody:last-child").append(newRow);
-
-                    $("#" + newRowId + " td:nth-child(2)").append(selFontSizeClone);
-                    $("#" + newRowId + " td:nth-child(3)").append(selFontFamilyClone);
-                    $("#" + newRowId + " td:nth-child(1)").append(inpLineClone);
-
-                    console.log("selfontfanilyClone height: " + $(selFontFamilyClone).height());
-                    $(inpLineClone).css("height", $(selFontFamilyClone).height() + 4);
-
-                    $(inpLineClone).keyup(function (event) {
-                        console.log("keyup");
-                        console.log(this);
-                        vectorEditor.setTextBoxContent($(this).val(), newTextBoxId);
-
-                    });
-                    // create an instance of the input text box and add it to the SVG editor
-
-                    var textEditClone = $("#tbdiv").clone();
-                    var svgDiv = $("#dvSVGContainer"); 
-
-                    
-                    vectorEditor.createTextBox(rowCount + 1, textEditClone, svgDiv);
-                });
-
-
-                //#endregion addlines
-
-
-
-                $("#btnExportSVG").click(function () {
-
-                    var imageURI = vectorEditor.exportSVG();
-                    // Save dataURI to seesion here calling an mvc action
-                    // use form files instead
-                    //window.location.href = "/Cart/AddToCart?productId=2&returnUrl=../PanelTags";
-
-                    $.ajax({
-                        url: '/Cart/AddToCartWithSVG',
-                        type: 'POST',
-                        async: false,
-                        dataType: null,
-                        data: {
-                            productId: 2,
-                            imageURI: imageURI
-                        },
-                        success: function (data) {
-                            console.log(data);
-                        }
-                    });
-                });
-
-            });
-
-            /******    TEST CODE ******/
-            function img_and_link() {
-                $('body').append(
-                    $('<a>')
-                        .attr('href-lang', 'image/svg+xml')
-                        .attr('href', 'data:image/svg+xml;utf8,' + unescape($('#svg')[0].outerHTML))
-                        .text('Download')
-                );
+            function setSelectedBackgroundColor() {
+                var color = $("#selPlateBackground").find('option:selected').attr('value');
+                $("#selPlateBackground").css('background', color);
+                //  var bgColor = $('#selPlateBackground :selected').css('backgroundColor');
+                //alert(bgColor);
             }
 
-            $("#btnAddItem3").click(function () {
-                img_and_link();
-                //var dataURI = vectorEditor.exportSVG();
+            //#region addlines
+            $("#btnAddLine").click(function () {
+                console.log("btn clicked");
+                //$("#")
+                var rowCount = $('#tblLines tr').length;
 
-                //$.ajax({
-                //    url: '/Cart/AddToCartWithSVG',
-                //    type: 'POST',
-                //    async: false,
-                //    dataType: null,
-                //    data: {
-                //        productId: 3,
-                //        dataURI: dataURI
-                //    },
-                //    success: function (data) {
-                //        console.log(data);
-                //    }
-                //});
+                // create the new row with id
+                var newRow = document.createElement("tr");
+                var newRowId = "inp" + (rowCount + 1);
+                var newTextBoxId = "txt" + (rowCount + 1);
+                newRow.setAttribute("id", newRowId);
+
+                var selFontSizeClone = $("#selFontSize").clone();
+                selFontSizeClone.css("visibility", "visible");
+
+                var selFontFamilyClone = $("#selFontFamily").clone();
+                selFontFamilyClone.css("visibility", "visible");
+
+                var dvVertCenterClone = $("#dvVertCenter").clone();
+                dvVertCenterClone.css("visibility", "visible");
+
+                var dvHorzCenterClone = $("#dvHorzCenter").clone();
+                dvHorzCenterClone.css("visibility", "visible");
+
+                var inpLineClone = $("#inpLine").clone();
+                inpLineClone.css("visibility", "visible");
+                var inpLineCloneId = "inpLine" + rowCount;
+                inpLineClone.attr("id", inpLineCloneId);
+
+                $(newRow).append("<td></td><td></td><td></td><td></td><td></td>")
+                $("#tblLines > tbody:last-child").append(newRow);
+
+                $("#" + newRowId + " td:nth-child(2)").append(selFontSizeClone);
+                $("#" + newRowId + " td:nth-child(3)").append(selFontFamilyClone);
+                $("#" + newRowId + " td:nth-child(4)").append(dvVertCenterClone);
+                $("#" + newRowId + " td:nth-child(5)").append(dvHorzCenterClone);
+                $("#" + newRowId + " td:nth-child(1)").append(inpLineClone);
+
+                console.log("selfontfanilyClone height: " + $(selFontFamilyClone).height());
+                $(inpLineClone).css("height", $(selFontFamilyClone).height() + 4);
+
+                $(inpLineClone).keyup(function (event) {
+                    console.log("keyup");
+                    console.log(this);
+                    vectorEditor.setTextBoxContent($(this).val(), newTextBoxId);
+
+                });
+                // create an instance of the input text box and add it to the SVG editor
+
+                var textEditClone = $("#tbdiv").clone();
+                var svgDiv = $("#dvSVGContainer");
+
+
+                vectorEditor.createTextBox(rowCount + 1, textEditClone, svgDiv);
             });
-                                /********  END TEST CODE **********/
-        </script>
 
-    }
+
+            //#endregion addlines
+
+
+
+            $("#btnExportSVG").click(function () {
+
+                var imageURI = vectorEditor.exportSVG();
+                // Save dataURI to seesion here calling an mvc action
+                // use form files instead
+                //window.location.href = "/Cart/AddToCart?productId=2&returnUrl=../PanelTags";
+
+                $.ajax({
+                    url: '/Cart/AddToCartWithSVG',
+                    type: 'POST',
+                    async: false,
+                    dataType: null,
+                    data: {
+                        productId: 2,
+                        imageURI: imageURI
+                    },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+        });
+
+        /******    TEST CODE ******/
+        function img_and_link() {
+            $('body').append(
+                $('<a>')
+                    .attr('href-lang', 'image/svg+xml')
+                    .attr('href', 'data:image/svg+xml;utf8,' + unescape($('#svg')[0].outerHTML))
+                    .text('Download')
+            );
+        }
+
+        $("#btnAddItem3").click(function () {
+            img_and_link();
+            //var dataURI = vectorEditor.exportSVG();
+
+            //$.ajax({
+            //    url: '/Cart/AddToCartWithSVG',
+            //    type: 'POST',
+            //    async: false,
+            //    dataType: null,
+            //    data: {
+            //        productId: 3,
+            //        dataURI: dataURI
+            //    },
+            //    success: function (data) {
+            //        console.log(data);
+            //    }
+            //});
+        });
+                                            /********  END TEST CODE **********/
+    </script>
+
+}
 

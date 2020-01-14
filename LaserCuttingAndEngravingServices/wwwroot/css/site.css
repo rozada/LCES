@@ -31,12 +31,12 @@ a.navbar-brand {
 }
 
 body {
-    background-color: cornflowerblue;   /*rgb(232, 232, 232);*/
+    background-color: cornflowerblue  /*rgb(232, 232, 232);*/
 }
 
 #dvMainContainer {
     background-color: aliceblue;
-    width: 85%;
+    width: 94%;
 }
 /* Provide sufficient contrast against white background */
 a {

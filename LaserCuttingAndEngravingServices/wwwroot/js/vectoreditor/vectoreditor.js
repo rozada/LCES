@@ -92,7 +92,7 @@
         
         console.log(tbdivheader);
 
-        /*textEdit[0].dragElement = new */dragElement(textEdit[0], svgDiv[0]);
+        /*textEdit[0].dragElement = new */dragElement(textEdit[0], svgDiv[0], editTextContainer[0]);
         //textEdit[0].dragElement(textEdit[0]);
 
         //svgDiv.appendChild(textEdit);
@@ -310,41 +310,27 @@
         global.vectorEditor.svgOwnerDocument = svgs[0].ownerDocument;
     }
     console.log(global.vectorEditor);
-
   
-       /* function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // calculate the new cursor position:
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            // set the element's new position:
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-        }*/
 }
 )(window);
 
-function dragElement(elmnt, svgDiv) {
+function dragElement(elem, svgDiv, editTextContainer) {
     
-    console.log("Elmnt ");
-    console.log(elmnt);
-    var elem = elmnt;
+    console.log("svgDiv");
+    console.log($(svgDiv).offset());
+    var parentRect = svgDiv.getBoundingClientRect();
+    var editTextContainer = editTextContainer;
 
     console.log(elem);
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     console.log("Pos1: " + pos1 + ", Pos2 :" + pos2 + ", Pos3: " + pos3 + ", Pos4: " + pos4);
-    if (document.getElementById(elmnt.id + "header")) {
-        console.log("present: " + elmnt.id + "header");
-    /* if present, the header is where you move the DIV from:*/
-        var header = document.getElementById(elmnt.id + "header");      
+    if (document.getElementById(elem.id + "header")) {
+        var header = document.getElementById(elem.id + "header");      
             header.onmousedown = dragMouseDown;
             console.log(header);
     } else {
         /* otherwise, move the DIV from anywhere inside the DIV:*/
-        elmnt.onmousedown = dragMouseDown;
+        elem.onmousedown = dragMouseDown;
     }
 
     function dragMouseDown(e) {      
@@ -355,9 +341,9 @@ function dragElement(elmnt, svgDiv) {
         console.log("Pos3 " +  pos3);
         pos3 = e.clientX;
         pos4 = e.clientY;        
-        /*document*/svgDiv.addEventListener("mouseup", closeDragElement);// onmouseup = closeDragElement;
+        document.addEventListener("mouseup", closeDragElement);// onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
-        /*document*/svgDiv.addEventListener("mousemove", elementDrag);//onmousemove = elementDrag;
+        document.addEventListener("mousemove", elementDrag);//onmousemove = elementDrag;
     }
 
     function elementDrag(e) {
@@ -370,20 +356,50 @@ function dragElement(elmnt, svgDiv) {
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-
+        
+        var rect = editTextContainer.getBoundingClientRect();
+        console.log(rect);
+        if (!isWithinBounds(rect)) {
+            return;
+        }
         // set the element's new position:
+        console.log("Top: " + elem.offsetTop);
         elem.style.top = (elem.offsetTop - pos2) + "px";
         elem.style.left = (elem.offsetLeft - pos1) + "px";
     }
 
+    function isWithinBounds(rect) {
+       /* if (
+            (rect.top >= parentRect.top && rect.bottom <= parentRect.bottom) &&
+            (rect.left >= parentRect.left && rect.right <= parentRect.right)
+        ) {
+            return true;
+        }
+        else*/ if (
+            ((pos2 > 0) && (rect.top < parentRect.top))
+            ||
+            ((pos2 < 0) && (rect.bottom > parentRect.bottom))
+            ||
+            ((pos1 > 0) && (rect.left < parentRect.left))
+            ||
+            ((pos1 < 0) && (rect.right > parentRect.right))
+        ) {
+            console.log("Not within bounds.");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     function closeDragElement() {
         console.log("Closedragelement");
-        var self = this;
+        
         /* stop moving when mouse button is released:*/
         //document.onmouseup = null;
-        /*document*/svgDiv.removeEventListener("mouseup", closeDragElement);
+        document.removeEventListener("mouseup", closeDragElement);
         //document.onmousemove = null;
-        /*document*/svgDiv.removeEventListener("mousemove", elementDrag);
+        document.removeEventListener("mousemove", elementDrag);
     }
 }
 /*dragElement.prototype.dragMouseDown = function (e) {
