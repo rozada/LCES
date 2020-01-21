@@ -62,7 +62,7 @@
     <option value="#ffffff" style="background: white;" selected>white</option>
 </select>
 
-<!-- Clonable invisible elements -->
+<!-- Start Clonable invisible elements -->
 
 <input id="inpLine" class="text-input" style="visibility: collapse" type="text" />
 
@@ -83,18 +83,18 @@
 <br />
 
 <select id="selFontFamily" style="visibility: collapse; width: 100px" title="Fonts">
-    <option style="font-family: Arial; font-style: italic; opacity: .3; background-color: gray; color: white" disabled selected>Select Font</option>
-    <option style="font-family: Arial">Arial</option>
-    <option style="font-family: Courier New">Courier New</option>
-    <option style="font-family: Times New Roman">Times New Roman</option>
+    <option style="font-family: Arial; font-style: italic; color: white; background-color: fuchsia" disabled selected>Select Font</option>
+    <option style="font-family: Arial; background-color: white; font-style: normal">Arial</option>
+    <option style="font-family: Courier New; background-color: white; font-style: normal">Courier New</option>
+    <option style="font-family: Times New Roman; background-color: white; font-style: normal">Times New Roman</option>
 </select>
 
 <br />
-<div id="dvVertCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
-<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
+<div id="dvVertCenter" style="visibility:collapse"><button style="height: 20px; width: 19px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
+<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 20px; width: 19px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
 
 
-<!-- Clonable invisible elements -->
+<!-- End Clonable invisible elements -->
 
 
 <div class="row">
@@ -225,6 +225,7 @@
                     console.log($(this).val());*/
             });
 
+            //#region background selection
             $("#selPlateBackground").change(function () {
                 console.log($(this).selected);
                 setSelectedBackgroundColor();
@@ -244,6 +245,62 @@
                 //  var bgColor = $('#selPlateBackground :selected').css('backgroundColor');
                 //alert(bgColor);
             }
+            //#endregion background selection 
+
+            //#region font selection
+            function cloneSelFontFamily(num) {                
+                var selFontFamilyClone = $("#selFontFamily").clone();
+                selFontFamilyClone.css("visibility", "visible");
+                var selFontFamilyId = "selFontFamily" + num;
+                selFontFamilyClone.attr("id", selFontFamilyId);
+
+                initFirstOption(selFontFamilyClone);
+                selFontFamilyClone[0].addEventListener("change", function () {
+                     setSelFontFamily(selFontFamilyId);
+                    
+                });
+                /*$("#" + selFontFamilyId).change(function () { 
+                    setSelFontFamily(selFontFamilyId);
+                    console.log("change selfamilyid");
+                });*/
+
+                return selFontFamilyClone;
+
+            }
+
+            var orgFontStyle;
+            var orgOpacity;
+            var orgBackgroundColor;
+            function initFirstOption(selFontFamilyClone) {
+                //var option = $(selFontFamilyClone).find('option:first');
+                //console.log("option");
+                //console.log(option[0]);
+
+                //save old css settings
+                orgFontStyle = $(selFontFamilyClone).css("font-style");
+                //orgOpacity = $(selFontFamilyClone).css("opacity");
+                orgBackgroundColor = $(selFontFamilyClone).css("background-color");
+
+                $(selFontFamilyClone).css("font-style", "italic");
+                //$(selFontFamilyClone).css("opacity", ".3");
+                $(selFontFamilyClone).css("background-color", "fuchsia");
+            }
+
+            function setSelFontFamily(selFontFamilyId) {                
+                var option = $("#" + selFontFamilyId).find('option:selected');//.attr('value'); 
+                var fontFamily = document.getElementById(selFontFamilyId).value;// $(option).attr('value');
+                console.log("Font family: " + fontFamily);
+                console.log("Select ID: ");
+                console.log($("#" + selFontFamilyId));
+
+
+                $("#" + selFontFamilyId).css('font-family', fontFamily);
+                $("#" + selFontFamilyId).css("font-style", orgFontStyle);
+                $("#" + selFontFamilyId).css("opacity", orgOpacity);
+                $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
+               // $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
+            }
+            //#endregion font selection
 
             //#region addlines
             $("#btnAddLine").click(function () {
@@ -260,7 +317,7 @@
                 var selFontSizeClone = $("#selFontSize").clone();
                 selFontSizeClone.css("visibility", "visible");
 
-                var selFontFamilyClone = $("#selFontFamily").clone();
+                var selFontFamilyClone = cloneSelFontFamily(rowCount + 1);// $("#selFontFamily").clone();
                 selFontFamilyClone.css("visibility", "visible");
 
                 var dvVertCenterClone = $("#dvVertCenter").clone();
