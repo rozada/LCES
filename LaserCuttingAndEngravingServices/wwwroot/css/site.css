@@ -129,7 +129,11 @@ svg {
     z-index: 9;
     background: transparent;
     text-align: center;
-    border: 0px solid #d3d3d3;
+    border: .25px solid #d3d3d3;
+}
+
+#tbdiv td{
+    border: .25px solid green;
 }
 
 #tbdivheader {
@@ -186,6 +190,20 @@ svg {
 
 .text-input {
 
+}
+
+.edit-line {
+    border: 1px dashed #000;
+    width: 10px;
+    margin: auto;
+    /*margin-top: 0%;*/
+    margin-bottom: 20px;
+}
+/* trying and arrow instead of edit-line */
+.arrow {
+    stroke: rgb(0,0,0);
+    stroke-width: 2;
+    marker-end: url(#markerArrow)
 }
 
 

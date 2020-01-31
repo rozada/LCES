@@ -66,7 +66,7 @@
 
 <input id="inpLine" class="text-input" style="visibility: collapse" type="text" />
 
-<br/>
+<br />
 
 <select id="selFontSize" style="visibility: collapse">
     <option value="6" style="font-size: 6px">6</option>
@@ -76,7 +76,7 @@
     <option value="12" style="font-size: 12px">12</option>
     <option value="14" style="font-size: 14px">14</option>
     <option value="16" style="font-size: 16px">16</option>
-    <option value="18" style="font-size: 18px" >18</option>
+    <option value="18" style="font-size: 18px">18</option>
 </select>
 
 
@@ -90,8 +90,8 @@
 </select>
 
 <br />
-<div id="dvVertCenter" style="visibility:collapse"><button style="height: 20px; width: 19px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
-<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 20px; width: 19px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
+<div id="dvVertCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
+<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
 
 
 <!-- End Clonable invisible elements -->
@@ -110,14 +110,55 @@
         <!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
         <div id="dvSVGContainer" style="border-style: solid; color: rebeccapurple; border-width: 0.5px;">
             <svg id="svg" width="550" height="350" style="border-style: solid; color: aqua;">
+                <defs>
+                    <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="1" refY="3"
+                            orient="auto">
+                        <path d="M1,1 L1,5.5 L5,3 L1,1" style="fill: blue;" />
+                    </marker>
+                </defs>
+
+                <line x1="0" y1="12" x2="22" y2="12" class="arrow" stroke-width="2" style="stroke:orange; z-index: 11;" />
             </svg>
             <div id="tbdiv" class="text-edit">
-                <div id="tbdivheader">
-                    <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid" />
-                </div>
-                <div id="editTextContainer" class="editable" style="font-size: 18px; font-family: Courier New; text-align: center">
-                    <p class="editable" contenteditable="true" id="txt">Charles</p>
-                </div>
+                <table>
+                    <tr>
+                        <td rowspan="2" id="tdEditTools" style="vertical-align:central;">
+                            <div class="divEditTools" style="height: 25px; border-radius: 2px; border: 1px solid purple;"></div>
+                            
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;
+                        </td>
+                        <td style="justify-content: right;">
+                            <div id="tbdivheader" >
+                                <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid;" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            @*<hr width="20px" class="edit-line" />*@
+
+                            <svg height="24" width="30" style="border: none; vertical-align: top">
+                                <defs>
+                                    <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="1" refY="3"
+                                            orient="auto" >
+                                        <path d="M1,1 L1,5.5 L5,3 L1,1" style="fill: blue;" />
+                                    </marker>
+                                </defs>
+
+                                <line x1="0" y1="2" x2="22" y2="2" class="arrow" stroke-width="2" style="stroke:blue;"/>
+                            </svg>
+                        </td>
+                        @*<td>
+                        </td>*@
+                        <td>
+                            <div id="editTextContainer" class="editable" style="font-size: 18px; font-family: Courier New; text-align: center">
+                                <p class="editable" contenteditable="true" id="txt">Charles</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 @*<table style="width: 100%; border-width: .5px; border-style: solid; border-color:black;">
                         <tr>
                             <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
@@ -130,6 +171,16 @@
     </div>
 </div>
 
+<svg height="24" width="30" style="border: none">
+    <defs>
+        <marker id="markerArrow" markerWidth="13" markerHeight="13" refX="1" refY="3"
+                orient="auto">
+            <path d="M1,1 L1,5.5 L5,3 L1,1" style="fill: #000000;" />
+        </marker>
+    </defs>
+
+    <line x1="0" y1="12" x2="20" y2="12" class="arrow" />
+</svg>
 
 <div>
     <input type="button" id="btnExportSVG" value="Export SVG" />
@@ -245,10 +296,10 @@
                 //  var bgColor = $('#selPlateBackground :selected').css('backgroundColor');
                 //alert(bgColor);
             }
-            //#endregion background selection 
+            //#endregion background selection
 
             //#region font selection
-            function cloneSelFontFamily(num) {                
+            function cloneSelFontFamily(num) {
                 var selFontFamilyClone = $("#selFontFamily").clone();
                 selFontFamilyClone.css("visibility", "visible");
                 var selFontFamilyId = "selFontFamily" + num;
@@ -256,10 +307,10 @@
 
                 initFirstOption(selFontFamilyClone);
                 selFontFamilyClone[0].addEventListener("change", function () {
-                     setSelFontFamily(selFontFamilyId);
-                    
+                    setSelFontFamily(selFontFamilyId);
+
                 });
-                /*$("#" + selFontFamilyId).change(function () { 
+                /*$("#" + selFontFamilyId).change(function () {
                     setSelFontFamily(selFontFamilyId);
                     console.log("change selfamilyid");
                 });*/
@@ -286,8 +337,8 @@
                 $(selFontFamilyClone).css("background-color", "fuchsia");
             }
 
-            function setSelFontFamily(selFontFamilyId) {                
-                var option = $("#" + selFontFamilyId).find('option:selected');//.attr('value'); 
+            function setSelFontFamily(selFontFamilyId) {
+                var option = $("#" + selFontFamilyId).find('option:selected');//.attr('value');
                 var fontFamily = document.getElementById(selFontFamilyId).value;// $(option).attr('value');
                 console.log("Font family: " + fontFamily);
                 console.log("Select ID: ");
@@ -298,7 +349,7 @@
                 $("#" + selFontFamilyId).css("font-style", orgFontStyle);
                 $("#" + selFontFamilyId).css("opacity", orgOpacity);
                 $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
-               // $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
+                // $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
             }
             //#endregion font selection
 
@@ -314,6 +365,7 @@
                 var newTextBoxId = "txt" + (rowCount + 1);
                 newRow.setAttribute("id", newRowId);
 
+                // the specs/parameters
                 var selFontSizeClone = $("#selFontSize").clone();
                 selFontSizeClone.css("visibility", "visible");
 
@@ -322,24 +374,31 @@
 
                 var dvVertCenterClone = $("#dvVertCenter").clone();
                 dvVertCenterClone.css("visibility", "visible");
+                dvVertCenterClone.css("float", "right");
 
                 var dvHorzCenterClone = $("#dvHorzCenter").clone();
                 dvHorzCenterClone.css("visibility", "visible");
+                dvHorzCenterClone.css("float", "right");
 
                 var inpLineClone = $("#inpLine").clone();
                 inpLineClone.css("visibility", "visible");
                 var inpLineCloneId = "inpLine" + rowCount;
                 inpLineClone.attr("id", inpLineCloneId);
 
+                // end the specs/parameters
+
                 $(newRow).append("<td></td><td></td><td></td><td></td><td></td>")
                 $("#tblLines > tbody:last-child").append(newRow);
 
-                $("#" + newRowId + " td:nth-child(2)").append(selFontSizeClone);
-                $("#" + newRowId + " td:nth-child(3)").append(selFontFamilyClone);
-                $("#" + newRowId + " td:nth-child(4)").append(dvVertCenterClone);
-                $("#" + newRowId + " td:nth-child(5)").append(dvHorzCenterClone);
+                //$("#" + newRowId + " td:nth-child(2)").append(selFontSizeClone);
+                //$("#" + newRowId + " td:nth-child(3)").append(selFontFamilyClone);
+                //$("#" + newRowId + " td:nth-child(4)").append(dvVertCenterClone);
+                //$("#" + newRowId + " td:nth-child(5)").append(dvHorzCenterClone);
                 $("#" + newRowId + " td:nth-child(1)").append(inpLineClone);
 
+
+
+                // making a height adjustment so all elements are about the same size
                 console.log("selfontfanilyClone height: " + $(selFontFamilyClone).height());
                 $(inpLineClone).css("height", $(selFontFamilyClone).height() + 4);
 
@@ -352,6 +411,12 @@
                 // create an instance of the input text box and add it to the SVG editor
 
                 var textEditClone = $("#tbdiv").clone();
+                
+                $(textEditClone).find(".divEditTools").append(selFontSizeClone);
+                $(textEditClone).find(".divEditTools").append(selFontFamilyClone);
+               // $(textEditClone).find(".divEditTools").append("<br>");
+                $(textEditClone).find(".divEditTools").append(dvVertCenterClone);
+                $(textEditClone).find(".divEditTools").append(dvHorzCenterClone);
                 var svgDiv = $("#dvSVGContainer");
 
 
@@ -415,7 +480,7 @@
             //    }
             //});
         });
-                                            /********  END TEST CODE **********/
+                                                /********  END TEST CODE **********/
     </script>
 
 }
