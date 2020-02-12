@@ -124,6 +124,14 @@ svg {
     top: 0px;
 }
 
+.btnDisplayEditTools {
+    border-radius: 5px;
+    border: 1px solid darkgrey;
+    background-color: fuchsia;
+    text-align: center;
+    width: 100px;
+}
+
 #tbdiv {
     position: absolute;
     z-index: 9;
@@ -170,8 +178,14 @@ svg {
     background: transparent;
     font-size: 18px;
     line-height: 18px;
+    width: 100px;
+    margin: auto;
     /*white-space: pre-line;*/
     /*  text-align: center;*/
+}
+
+.editable .editing {
+    border: dashed;
 }
 
 .editable div {

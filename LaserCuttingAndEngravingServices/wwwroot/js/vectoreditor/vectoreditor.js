@@ -2,6 +2,11 @@
 (function (global) {
     var svgns = "http://www.w3.org/2000/svg";
 
+    // Edit States
+    var PromptEdit = 0;
+    var Editing = 1;
+    var Saved = 2;
+
     // VectorEditor constructor
     function VectorEditor() {
         var length;
@@ -70,8 +75,91 @@
 
     //#region textbox methods
 
+    VectorEditor.prototype.setEditToolsStatus  = function(textEdit, status) {
+        var self = this;
+
+        var trEditToolsJQ = $(textEdit).find(".trEditTools");
+        var trEditTools = trEditToolsJQ[0];
+        var divEditTools = $(trEditToolsJQ).find(".divEditTools");
+        var divDisplayEditTools = $(trEditToolsJQ).find(".divDisplayEditTools");
+        textEdit.Status = parseInt(status, 10);
+
+        switch (status) {
+            case PromptEdit:
+                
+                $(divEditTools).css("visibility", "collapse");
+                $(btnDisplayEditTools).css("visibility", "visible");
+                var newHeight = $(divDisplayEditTools).css("height");
+                //$(trEditToolsJQ).css("height", newHeight);
+                break;
+            case Editing:
+                console.log("editing");
+                $(divEditTools).css("visibility", "visible");
+                $(divDisplayEditTools).hide();// css("visibility", "collapse");
+                var newHeight = $(divEditTools).css("height");
+                console.log("height " + newHeight);
+                //$(trEditToolsJQ).height("25px");// "visibility", "collapse");
+                break;
+            case Save:
+                $(divEditTools).css("visibility", "collapse");
+                $(divDisplayEditTools).css("visibility", "collapse");
+                //$(trEditToolsJQ).css("height", 0);
+                break;
+            default:
+                break;
+
+
+        }
+
+    }
+
+    VectorEditor.prototype.isAtEdge = function (mousePoint, textEditJQ, rect, svgDiv, editTextContainerJQ) {
+        console.log("Mouse moving");
+        console.log(mousePoint);
+        var moveEdgeWidth = 4;
+
+       // var parentRect = svgDiv.getBoundingClientRect();
+        if (
+            (mousePoint.y < rect.top + moveEdgeWidth && mousePoint.y > rect.top - moveEdgeWidth)
+            ||
+            (mousePoint.y > rect.bottom - moveEdgeWidth && mousePoint.y < rect.bottom + moveEdgeWidth)
+            ||
+            (mousePoint.x < rect.left + moveEdgeWidth && mousePoint.x > rect.left - moveEdgeWidth)
+            ||
+            (mousePoint.x > rect.right - moveEdgeWidth && mousePoint.x < rect.right + moveEdgeWidth)
+        ) {
+            console.log("Is at edge.");
+            $(textEditJQ).css("cursor", "move");
+            dragElement(textEditJQ[0], svgDiv, editTextContainerJQ[0]); 
+            return false;
+        }
+        else {
+            $(textEditJQ).css("cursor", "auto");
+            return true;
+        }
+    }
+
     VectorEditor.prototype.createTextBox = function (id, textEdit, svgDiv) {
         var self = this;
+        self.setEditToolsStatus(textEdit, Editing);
+
+        var editTextContainer = $(textEdit).find("#editTextContainer");
+        $(editTextContainer).attr("id", "editTextContainer" + id);
+        console.log("Pre editTextContainer");
+        console.log(editTextContainer);
+        var editBoxJQ = $(textEdit).find(".editable span");
+        $(textEdit).mousemove(function (e) {
+            var rect = editBoxJQ[0].getBoundingClientRect();
+            console.log(rect);
+            console.log("X: " + e.clientX);
+            console.log("Y: " + e.clientY);
+            var mousePoint = { x: e.clientX, y: e. clientY }
+            console.log(e); 
+            self.isAtEdge(mousePoint, editBoxJQ, rect, svgDiv[0], editTextContainer);
+            console.log("Mousemove");
+        });
+
+
         var pos = self.getPreviousTextEditPos(id); 
         pos.left += 35;
         pos.top += 35;
@@ -84,11 +172,10 @@
         $(svgDiv).append($(textEdit));
 
         var tbdivheader = $(textEdit).find("#tbdivheader");
-        var editTextContainer = $(textEdit).find("#editTextContainer");
+        //var editTextContainer = $(textEdit).find("#editTextContainer");
         console.log("tbdivheader ");
         console.log(tbdivheader);
         $(tbdivheader).attr("id", "tbdiv" + id + "header");
-        $(editTextContainer).attr("id", "editTextContainer" + id);
         
         console.log(tbdivheader);
 
@@ -369,13 +456,7 @@ function dragElement(elem, svgDiv, editTextContainer) {
     }
 
     function isWithinBounds(rect) {
-       /* if (
-            (rect.top >= parentRect.top && rect.bottom <= parentRect.bottom) &&
-            (rect.left >= parentRect.left && rect.right <= parentRect.right)
-        ) {
-            return true;
-        }
-        else*/ if (
+        if (
             ((pos2 > 0) && (rect.top < parentRect.top))
             ||
             ((pos2 < 0) && (rect.bottom > parentRect.bottom))
@@ -402,48 +483,3 @@ function dragElement(elem, svgDiv, editTextContainer) {
         document.removeEventListener("mousemove", elementDrag);
     }
 }
-/*dragElement.prototype.dragMouseDown = function (e) {
-    var self = this;
-
-
-    console.log("Dragmousedown prototype");
-    console.log(self);
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    console.log("Pos3 " + self.pos3);
-    self.pos3 = e.clientX;
-    self.pos4 = e.clientY;
-    
-    document.addEventListener("mouseup", dragElement.prototype.closeDragElement);// onmouseup = closeDragElement;
-
-    // call a function whenever the cursor moves:
-    document.addEventListener("mousemove", dragElement.prototype.elementDrag);//onmousemove = elementDrag;
-}
-
-dragElement.prototype.elementDrag = function (e) {
-    console.log("ELEMENT Drag");
-    var self = this;
-
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    self.pos1 = self.pos3 - e.clientX;
-    self.pos2 = self.pos4 - e.clientY;
-    self.pos3 = e.clientX;
-    self.pos4 = e.clientY;
-    
-    // set the element's new position:
-    self.elem.style.top = (self.elem.offsetTop - self.pos2) + "px";
-    self.elem.style.left = (self.elem.offsetLeft - self.pos1) + "px";
-}
-*/
-/*dragElement.prototype.closeDragElement = function () {
-    console.log("Closedragelement");
-    var self = this;*/
-    /* stop moving when mouse button is released:*/
-    //document.onmouseup = null;
- /*   document.removeEventListener("mouseup", dragElement.prototype.closeDragElement);
-    //document.onmousemove = null;
-    document.removeEventListener("mousemove", dragElement.prototype.elementDrag);
-}*/

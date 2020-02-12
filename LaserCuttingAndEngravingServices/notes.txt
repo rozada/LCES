@@ -9,3 +9,4 @@ EDITing capabiilites
 4. Background
 5. Justifications
 6. Line Spacing
+7. Make this work like a popup highlight until the user inputs somethings
