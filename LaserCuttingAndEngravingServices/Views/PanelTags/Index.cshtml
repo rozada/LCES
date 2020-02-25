@@ -7,6 +7,7 @@
 
 <h1>Panel Tags</h1>
 
+<button id="btnDisplayEditTools2" class="displayEditToolsButton">Edit</button>
 
 <label for="selPlateDimenions">Select Dimensions (W x H):</label>
 <select id="selPlateDimensions">
@@ -109,42 +110,53 @@
     <div class="col-md-6">
         <!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
         <div id="dvSVGContainer" style="border-style: solid; color: rebeccapurple; border-width: 0.5px;">
-              <div id="tbdiv" class="text-edit">
+            <div id="tbdiv" class="text-edit">
                 <table>
                     <tr class="trEditTools">
-                        <td>
-                            &nbsp;&nbsp;
-                        </td>
+                        @*<td>
+                    &nbsp;&nbsp;
+                </td>*@
                         <td class="tdEditTools" style="vertical-align:central;text-align: center;">
-                            <div class="divEditTools" style="border-radius: 6px; border: 1px solid fuchsia; background-color: fuchsia; text-align: center; height: 35px; vertical-align: central; padding-top: 3px"></div>
-                            <div class="divDisplayEditTools">
-                                <button class="btnDisplayEditTools">Edit</button>
+                            <div class="divEditTools" style="border-radius: 6px; border: 1px solid fuchsia; background-color: fuchsia; text-align: center; height: 35px; vertical-align: central; padding-top: 3px;">
+                                <button class="DisplayEditToolsButton">Edit</button>
                             </div>
+                            @*<div class="divDisplayEditTools">
+                                <button class="DisplayEditToolsButton">Edit</button>
+                            </div>*@
                         </td>
                     </tr>
                     <tr>
-                        <td style="justify-content: right;">
-                            <div id="tbdivheader">
-                                <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid;" />
-                            </div>
-                        </td>
-                        @*<td>
-        </td>*@
+                        @*<td style="justify-content: right;">
+
+                </td>
+                <td>
+                </td>*@
                         <td>
-                            <div id="editTextContainer" class="editable" style="font-size: 18px; font-family: Courier New; text-align: center; width: auto;">
-                                
-                                <span class="editable" contenteditable="true" id="txt" style="border: .5px solid blue;">Charles</span>
+                            <div id="editTextContainer" class="editable" style="font-size: 18px; font-family: Courier New; text-align: center; border: .5px dashed orange; width: 250px;margin-left: -20px;">
+                                <table style="border: solid .3px red; display: inline-table;padding: 0px;">
+                                    <tr style="padding: 0px; margin: 0px;">
+                                        <td>
+                                            <div id="tbdivheader">
+                                                <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid;" />
+                                            </div>
+                                        </td>
+                                        <td style="padding: 0px; margin: 0px;">
+                                            <span class="editable" contenteditable="true" id="txt" style="border: .5px dashed black;">Koo</span>
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </div>
                         </td>
                     </tr>
                 </table>
                 @*<table style="width: 100%; border-width: .5px; border-style: solid; border-color:black;">
-                        <tr>
-                            <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
-                            <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
-                            <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
-                        </tr>
-                    </table>*@
+            <tr>
+                <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
+                <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
+                <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
+            </tr>
+        </table>*@
             </div>
         </div>
     </div>
@@ -348,25 +360,35 @@
                 var selFontSizeClone = $("#selFontSize").clone();
                 selFontSizeClone.css("visibility", "visible");
                 selFontSizeClone.css("margin", "auto");
+                selFontSizeClone.addClass("EditTool");
 
                 var selFontFamilyClone = cloneSelFontFamily(rowCount + 1);// $("#selFontFamily").clone();
                 selFontFamilyClone.css("visibility", "visible");
                 selFontFamilyClone.css("margin", "auto");
+                selFontFamilyClone.addClass("EditTool");
 
                 var dvVertCenterClone = $("#dvVertCenter").clone();
                 dvVertCenterClone.css("visibility", "visible");
                 dvVertCenterClone.css("display", "inline-block");
                 dvVertCenterClone.css("margin", "auto");
+                dvVertCenterClone.addClass("EditTool");
 
                 var dvHorzCenterClone = $("#dvHorzCenter").clone();
                 dvHorzCenterClone.css("visibility", "visible");
                 dvHorzCenterClone.css("display","inline-block");
                 dvHorzCenterClone.css("margin", "auto");
+                dvHorzCenterClone.addClass("EditTool");
 
                 var inpLineClone = $("#inpLine").clone();
                 inpLineClone.css("visibility", "visible");
                 var inpLineCloneId = "inpLine" + rowCount;
                 inpLineClone.attr("id", inpLineCloneId);
+                inpLineClone.addClass("EditTool");
+
+                //var btnDisplayEditToolsClone = $("#btnDisplayEditTools2").clone();
+                //btnDisplayEditToolsClone.css("visibility", "visible");
+                //var btnDisplayEditToolsId = "btnDisplayEditTools" + rowCount;
+                //btnDisplayEditToolsClone.attr("id", btnDisplayEditToolsId);
 
                 // end the specs/parameters
 
@@ -396,10 +418,10 @@
                 var textEditClone = $("#tbdiv").clone();
                
                 $(textEditClone).find(".divEditTools").append(selFontSizeClone);
-                $(textEditClone).find(".divEditTools").append(selFontFamilyClone);
-               // $(textEditClone).find(".divEditTools").append("<br>");
+                $(textEditClone).find(".divEditTools").append(selFontFamilyClone);               
                 $(textEditClone).find(".divEditTools").append(dvVertCenterClone);
                 $(textEditClone).find(".divEditTools").append(dvHorzCenterClone);
+               // $(textEditClone).find(".divEditTools").append(btnDisplayEditToolsClone);
                 var svgDiv = $("#dvSVGContainer");
 
 

@@ -5,7 +5,7 @@
     // Edit States
     var PromptEdit = 0;
     var Editing = 1;
-    var Saved = 2;
+    var Save = 2;
 
     // VectorEditor constructor
     function VectorEditor() {
@@ -75,42 +75,64 @@
 
     //#region textbox methods
 
-    VectorEditor.prototype.setEditToolsStatus  = function(textEdit, status) {
-        var self = this;
+    VectorEditor.prototype.setEditToolsStatus = function (textEdit, divEditTools, btnDisplayEditTools, status, self) {
+        if (!self) {
+            self = this;
+        }
 
-        var trEditToolsJQ = $(textEdit).find(".trEditTools");
-        var trEditTools = trEditToolsJQ[0];
-        var divEditTools = $(trEditToolsJQ).find(".divEditTools");
-        var divDisplayEditTools = $(trEditToolsJQ).find(".divDisplayEditTools");
+        if (status === PromptEdit && textEdit.Status === Editing) {
+            return;
+        }
+
         textEdit.Status = parseInt(status, 10);
 
         switch (status) {
-            case PromptEdit:
-                
-                $(divEditTools).css("visibility", "collapse");
-                $(btnDisplayEditTools).css("visibility", "visible");
-                var newHeight = $(divDisplayEditTools).css("height");
-                //$(trEditToolsJQ).css("height", newHeight);
+            case PromptEdit:                
+
+                console.log("PromptEdit");
+                self.showEditTools(divEditTools, false);
+                btnDisplayEditTools.css("visibility", "visible");
+
+                divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
                 break;
             case Editing:
-                console.log("editing");
-                $(divEditTools).css("visibility", "visible");
-                $(divDisplayEditTools).hide();// css("visibility", "collapse");
-                var newHeight = $(divEditTools).css("height");
-                console.log("height " + newHeight);
-                //$(trEditToolsJQ).height("25px");// "visibility", "collapse");
+                console.log("Editing mode");
+                
+                self.showEditTools(divEditTools, true);
+                console.log(divEditTools);
+                btnDisplayEditTools.css("visibility", "hidden");
+
+                divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 4000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                
                 break;
             case Save:
-                $(divEditTools).css("visibility", "collapse");
-                $(divDisplayEditTools).css("visibility", "collapse");
-                //$(trEditToolsJQ).css("height", 0);
+                console.log("Save mode");
+                
+                self.showEditTools(divEditTools, false);
+                btnDisplayEditTools.css("visibility", "hidden");
                 break;
             default:
                 break;
 
 
         }
+    }
 
+    VectorEditor.prototype.showEditTools = function (container, show) {
+        if (show) {    
+            console.log("showing edit tools");
+            container.css("visibility", "visible");
+            container.find(".EditTool").css("visibility", "visible");
+        }
+        else {                        
+            container.css("visibility", "hidden");
+            container.find(".EditTool").css("visibility", "hidden");
+        }
+    }
+
+    VectorEditor.prototype.startEditingTimer = function (textEdit, btnDisplayEditTools) {
+        self = this;
+        console.log("te " + textEdit);
+        return setTimeout(self.setEditToolsStatus, 4000, textEdit, btnDisplayEditTools, Save, self);
     }
 
     VectorEditor.prototype.isAtEdge = function (mousePoint, textEditJQ, rect, svgDiv, editTextContainerJQ) {
@@ -130,7 +152,7 @@
         ) {
             console.log("Is at edge.");
             $(textEditJQ).css("cursor", "move");
-            dragElement(textEditJQ[0], svgDiv, editTextContainerJQ[0]); 
+            //dragElement(textEditJQ[0], svgDiv, editTextContainerJQ[0]); 
             return false;
         }
         else {
@@ -141,25 +163,59 @@
 
     VectorEditor.prototype.createTextBox = function (id, textEdit, svgDiv) {
         var self = this;
-        self.setEditToolsStatus(textEdit, Editing);
+        var btnDisplayEditTools = $(textEdit).find(".DisplayEditToolsButton").first();
+        var trEditToolsJQ = $(textEdit).find(".trEditTools");
+        var divEditTools = $(trEditToolsJQ).find(".divEditTools");
 
+        divEditTools[0].timer = null;
+
+        //Working on the BLUR STILL
+        $(divEditTools).mouseleave(function () {
+            console.log("The blur");
+            divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 4000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                
+        });
+
+        $(divEditTools).mousemove(function () {
+            
+            if (divEditTools[0].timer) {
+                console.log("mousemove: " + divEditTools[0].timer);
+                clearTimeout(divEditTools[0].timer);
+            }
+        });
+
+        self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Editing);
+             
         var editTextContainer = $(textEdit).find("#editTextContainer");
         $(editTextContainer).attr("id", "editTextContainer" + id);
-        console.log("Pre editTextContainer");
-        console.log(editTextContainer);
+
         var editBoxJQ = $(textEdit).find(".editable span");
+        $(editBoxJQ).attr("id", "txt" + id);   
+
+        $(editBoxJQ).mouseenter(function () {
+            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
+        });
+
+        btnDisplayEditTools.click(function (e) {
+            console.log("found edit tools button");
+            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Editing);
+        });
+
         $(textEdit).mousemove(function (e) {
+            //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
+            return;
+
             var rect = editBoxJQ[0].getBoundingClientRect();
-            console.log(rect);
-            console.log("X: " + e.clientX);
-            console.log("Y: " + e.clientY);
+            //console.log(rect);
+            //console.log("X: " + e.clientX);
+            //console.log("Y: " + e.clientY);
             var mousePoint = { x: e.clientX, y: e. clientY }
-            console.log(e); 
+            //console.log(e); 
             self.isAtEdge(mousePoint, editBoxJQ, rect, svgDiv[0], editTextContainer);
             console.log("Mousemove");
         });
+      
 
-
+        //#region position the new line in the correct place
         var pos = self.getPreviousTextEditPos(id); 
         pos.left += 35;
         pos.top += 35;
@@ -185,7 +241,11 @@
         //svgDiv.appendChild(textEdit);
 
 
+        //#endregion position the new line in the correct place
+
         return;
+
+
         var text = this.svgOwnerDocument.createElementNS(svgns, "text");
         text.setAttributeNS(null, "x", 30);
         text.setAttributeNS(null, "y", 90);

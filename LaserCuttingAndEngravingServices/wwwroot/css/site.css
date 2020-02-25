@@ -124,12 +124,18 @@ svg {
     top: 0px;
 }
 
-.btnDisplayEditTools {
+.DisplayEditToolsButton {
     border-radius: 5px;
     border: 1px solid darkgrey;
     background-color: fuchsia;
     text-align: center;
     width: 100px;
+    position: absolute;
+    top: 15px;
+    left: 55px;
+    visibility: hidden; 
+
+    
 }
 
 #tbdiv {
@@ -148,7 +154,7 @@ svg {
     padding: 0px;
     width: 17px;
     height: 17px;
-    border-style: solid;
+    border-style: dashed;
     border-width: .5px;
     border-color: red;
     text-align: center;
@@ -220,6 +226,24 @@ svg {
     marker-end: url(#markerArrow)
 }
 
+#dvTest {
+    border: 1px solid red;
+    text-align: center;
+}
+
+#tblTest {
+    border: 1px solid blue;
+    display: inline-table;
+}
+
+.displayEditToolsButton {
+    position: absolute;
+    top: 14px;
+    left: 37%;
+    
+    border-radius: 5px;
+    background-color: fuchsia;
+}
 
 /********Customn Controls *********/
 input[type=range][orient=vertical] {
