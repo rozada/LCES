@@ -3,20 +3,30 @@
     var svgns = "http://www.w3.org/2000/svg";
 
     // Edit States
-    var PromptEdit = 0;
-    var Editing = 1;
-    var Save = 2;
+    var PromptEdit = "PromptEdit";
+    var PromptEditLeave = "PromptEditLeave";
+    var EditingNoFocus = "EditingNoFocus";
+    var EditingFocusNoInput = "EditingFocusNoInput";
+    var EditingFocusInput = "EditingFocusInput";
+    var EditingFocusInputKeyDown = "EditingFocusInputKeyDown";
+    var Editing = "Editing";//{ Name: "Editing", Value: 2 };
+    var Save = "Save";//{ Name: "Save", Value: 3 };
 
     // VectorEditor constructor
     function VectorEditor() {
         var length;
         var width;
-        var svg;
+        var svg = $("#dvSVGContainer");
         var svgOwnerDocument;
         var currentShape;
         var currentText = null;
         var rectWidth;
         var rectHeight;
+        console.log("INIITED");
+
+        $(svg).click(function () {
+            console.log("svg click");
+        });
     };
 
     //#region Methods
@@ -75,40 +85,48 @@
 
     //#region textbox methods
 
-    VectorEditor.prototype.setEditToolsStatus = function (textEdit, divEditTools, btnDisplayEditTools, status, self) {
+    VectorEditor.prototype.setEditToolsStatus = function (textEdit, divEditTools, btnDisplayEditTools, status, self, statusSpan) {
         if (!self) {
             self = this;
         }
 
-        if (status === PromptEdit && textEdit.Status === Editing) {
+        if (
+            status === PromptEdit && textEdit.Status === Editing  // we are already editing, so need need to prompt for it
+            ) {
             return;
         }
 
-        textEdit.Status = parseInt(status, 10);
+        textEdit.Status = status;//parseInt(status, 10);
+        console.log("Status span: " + statusSpan);
+        $(statusSpan).text(status);
 
         switch (status) {
             case PromptEdit:                
 
                 console.log("PromptEdit");
-                self.showEditTools(divEditTools, false);
-                btnDisplayEditTools.css("visibility", "visible");
+                self.showEditTools(divEditTools, false, true);
+                //btnDisplayEditTools.css("visibility", "visible");
 
-                divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
+                //divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
                 break;
-            case Editing:
-                console.log("Editing mode");
-                
-                self.showEditTools(divEditTools, true);
-                console.log(divEditTools);
-                btnDisplayEditTools.css("visibility", "hidden");
+            case PromptEditLeave:
+                break;
 
-                divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 4000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                
+            case EditingNoFocus:
+                console.log("Editing mode");
+                self.showEditTools(divEditTools, true, false);
+                break;
+            case EditingFocusNoInput:
+                console.log(EditingFocusNoInput);
+                break;
+            case EditingFocusInput:
+                console.log(EditingFocusInput);
                 break;
             case Save:
                 console.log("Save mode");
+                self.showEditTools(divEditTools, false, false);
                 
-                self.showEditTools(divEditTools, false);
-                btnDisplayEditTools.css("visibility", "hidden");
+                //btnDisplayEditTools.css("visibility", "hidden");
                 break;
             default:
                 break;
@@ -117,7 +135,7 @@
         }
     }
 
-    VectorEditor.prototype.showEditTools = function (container, show) {
+    VectorEditor.prototype.showEditTools = function (container, show, showDisplayEditToolsButton) {
         if (show) {    
             console.log("showing edit tools");
             container.css("visibility", "visible");
@@ -127,13 +145,14 @@
             container.css("visibility", "hidden");
             container.find(".EditTool").css("visibility", "hidden");
         }
+        if (showDisplayEditToolsButton) {
+            container.find(".DisplayEditToolsButton").css("visibility", "visible");
+        }
+        else {
+            container.find(".DisplayEditToolsButton").css("visibility", "hidden");
+        }
     }
 
-    VectorEditor.prototype.startEditingTimer = function (textEdit, btnDisplayEditTools) {
-        self = this;
-        console.log("te " + textEdit);
-        return setTimeout(self.setEditToolsStatus, 4000, textEdit, btnDisplayEditTools, Save, self);
-    }
 
     VectorEditor.prototype.isAtEdge = function (mousePoint, textEditJQ, rect, svgDiv, editTextContainerJQ) {
         console.log("Mouse moving");
@@ -161,12 +180,19 @@
         }
     }
 
+
     VectorEditor.prototype.createTextBox = function (id, textEdit, svgDiv) {
         var self = this;
         var btnDisplayEditTools = $(textEdit).find(".DisplayEditToolsButton").first();
         var trEditToolsJQ = $(textEdit).find(".trEditTools");
-        var divEditTools = $(trEditToolsJQ).find(".divEditTools");
+        var divEditTools = $(trEditToolsJQ).find(".edit-tools-div");
+        var editTextContainer = $(textEdit).find("#editTextContainer");       
+        var editBoxJQ = $(textEdit).find(".editable-create");    
+        var statusSpan = $(textEdit).find(".editing-status span");     
+        console.log("status span1:" + statusSpan);
+        console.log(editBoxJQ);
 
+        //#region divEditTools
         divEditTools[0].timer = null;
 
         //Working on the BLUR STILL
@@ -182,23 +208,139 @@
                 clearTimeout(divEditTools[0].timer);
             }
         });
+        //#endregion divEditTools
+        //#region editBox
+        $(editBoxJQ).mouseover(function () {
+            //console.log("mouseover");
+            //console.log($(this));
+            //$(this)[0].className += " MouseOver";//.addClass("mouseover");
+            //console.log($(this)[0]);
+            //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingFocusNoInput);
+            setEditingStatus(EditingFocusNoInput);
+        });
 
-        self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Editing);
-             
-        var editTextContainer = $(textEdit).find("#editTextContainer");
-        $(editTextContainer).attr("id", "editTextContainer" + id);
+        $(editBoxJQ).mousedown(function () {
+            setEditingStatus(EditingFocusInput);
+            //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
+        });
 
-        var editBoxJQ = $(textEdit).find(".editable span");
-        $(editBoxJQ).attr("id", "txt" + id);   
+        $(editBoxJQ).keydown(function (e) {
+           
+            setEditingStatus(EditingFocusInputKeyDown, e);
+        });
 
-        $(editBoxJQ).mouseenter(function () {
-            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
+        $(editBoxJQ).mouseleave(function () {
+            console.log("mouse leave");
+            if (textEdit.Status === PromptEdit) {
+                // start a timer which can only be deactivated from within promptEdit. It is attached to divEditTools                
+                divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 500, textEdit, divEditTools, btnDisplayEditTools, Save, self);
+            }
+        });
+
+        $(editBoxJQ).focusout(function () {
+            console.log("focus out");
+            $(this).removeClass("MouseDown");
+        });
+        //#endregion editBox
+        //#region btnDisplayEditTools
+        $(btnDisplayEditTools).mouseenter(function () {
+            console.log("mouse enter");
+            // kill timeout here
+            if (divEditTools[0].timer) {
+                clearTimeout(divEditTools[0].timer);
+            }
         });
 
         btnDisplayEditTools.click(function (e) {
             console.log("found edit tools button");
-            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Editing);
+            /* CLEAR ANY EXISTING TIMERS HERE */
+            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);
         });
+
+        //#endregion btnDisplayEditTools            
+
+        // Start of in editing but without focus or input
+        //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);   
+        setEditingStatus(EditingNoFocus);
+        divEditTools[0].timer = setTimeout(function () {            
+            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Save, self, statusSpan);   
+        }, 1000);  // ** change back to 4000 after testing
+
+        function setEditingStatus(status, sender) {
+            textEdit.Status = status;
+            $(statusSpan).text(status);
+            switch (status) {
+                case PromptEdit:
+
+                    console.log("PromptEdit");
+                    self.showEditTools(divEditTools, false, true);
+                    //btnDisplayEditTools.css("visibility", "visible");
+
+                    //divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
+                    break;
+                case EditingNoFocus:
+                    console.log("EditingNoFocus");
+                    self.showEditTools(divEditTools, true, false);
+                    if ($(editBoxJQ).hasClass("editable-create")) {
+                        $(editBoxJQ).removeClass("editable-create");
+                        $(editBoxJQ).addClass("editing-no-focus-start");
+                    }
+                    else {
+                        $(editBoxJQ).addClass("editing-no-focus");
+                    }
+                    console.log(editBoxJQ[0].className);
+                    break;
+                case EditingFocusNoInput:
+                    if ($(editBoxJQ).hasClass("editing-no-focus-start")) {
+                        $(editBoxJQ).removeClass("editing-no-focus-start");
+                        $(editBoxJQ).addClass("editing-focus-no-input-start");
+                    }
+                    else if ($(editBoxJQ).hasClass("editing-no-focus")) {
+                        $(editBoxJQ).removeClass("editing-no-focus");
+                        $(editBoxJQ).addClass("editing-focus-no-input");
+                    }
+                    break;
+                case EditingFocusInput:
+                    if (!$(editBoxJQ).hasClass("editing-focus-input")) {
+                        $(editBoxJQ).removeClass("");
+                        $(editBoxJQ).addClass("editing-focus-input");
+                        $(editBoxJQ).text("__");                     
+
+                        editBoxJQ[0].addEventListener("click", function () {
+                            //self.triggerMouseEvent(editBoxJQ[0], "focus");
+                            console.log("heard click");
+                            console.log(window.getSelection());
+                            self.placeCaretAtEnd(editBoxJQ[0]);
+                        });
+                        var e = new jQuery.Event("mousedown");
+                        e.pageX = 3;
+                        e.pageY = 3;
+                        $(editBoxJQ).trigger(e);
+                        //
+                        //self.triggerMouseEvent(editBoxJQ[0], "click");
+                        
+                    }
+                    else { 
+                        console.log("mousedown");
+                    }
+                    
+                    break;
+                case EditingFocusInputKeyDown:
+                    if (!$(editBoxJQ).hasClass("editing-focus-input-keydown")) {  // this only gets called once to remove the placeholder text
+                        console.log("EditingFocusInputKeyDown");
+                        console.log(sender.key);
+                        $(editBoxJQ).width(50);
+                        $(editBoxJQ).text("");
+                        $(editBoxJQ).removeClass("");
+                        $(editBoxJQ).addClass("editing-focus-input-keydown");
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } 
+
 
         $(textEdit).mousemove(function (e) {
             //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
@@ -223,19 +365,19 @@
 
         $(textEdit).parent().css({ position: 'relative' });
         $(textEdit).css({ top: pos.top, left: pos.left, position: 'absolute' });
-        $(textEdit).attr("id", "tbdiv" + id);
+       // $(textEdit).attr("id", "tbdiv" + id);
         //textEdit.style.cssText = "border-style: solid; height: 75px; width: 300px;background-color: orange";
         $(svgDiv).append($(textEdit));
 
-        var tbdivheader = $(textEdit).find("#tbdivheader");
+        var tbdivheader = $(textEdit).find("tb-div-header").first();//("#tbdivheader");
         //var editTextContainer = $(textEdit).find("#editTextContainer");
         console.log("tbdivheader ");
         console.log(tbdivheader);
-        $(tbdivheader).attr("id", "tbdiv" + id + "header");
+        //$(tbdivheader).attr("id", "tbdiv" + id + "header");
         
         console.log(tbdivheader);
 
-        /*textEdit[0].dragElement = new */dragElement(textEdit[0], svgDiv[0], editTextContainer[0]);
+        dragElement(textEdit[0], svgDiv[0], editTextContainer[0]);
         //textEdit[0].dragElement(textEdit[0]);
 
         //svgDiv.appendChild(textEdit);
@@ -245,27 +387,30 @@
 
         return;
 
+    }
 
-        var text = this.svgOwnerDocument.createElementNS(svgns, "text");
-        text.setAttributeNS(null, "x", 30);
-        text.setAttributeNS(null, "y", 90);
-        //text.addEventListener("mousemove", function () { window.alert("mousemove"); });
-        //text.setAttribute("width", "150");
-        //text.setAttribute("height", "75"); 
-        //text.setAttribute("textLength", "200px");
-        text.setAttribute("id", id);
-        text.setAttribute("font-size", "18px");
-        text.setAttribute("font-family", "Courier New");
-        text.setAttribute("fill", "green");
-        
-        text.textContent = "(new Text Box)";
-        text.style.zIndex = 15;
-        //textEdit.appendChild(text);
-        self.svg.appendChild(text);//Edit);
-       
-        //self.svg.appendChild(text);
+    VectorEditor.prototype.placeCaretAtEnd = function (el) {
+        el.focus();
+        if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+            var range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } else if (typeof document.body.createTextRange != "undefined") {
+            var textRange = document.body.createTextRange();
+            textRange.moveToElementText(el);
+            textRange.collapse(false);
+            textRange.select();
+        }
+    }
 
-        console.log(text);
+    VectorEditor.prototype.triggerMouseEvent = function(node, eventType) {
+        var clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent(eventType, true, true);
+        node.dispatchEvent(clickEvent);
     }
 
     VectorEditor.prototype.getPreviousTextEditPos = function (id) {
@@ -471,8 +616,12 @@ function dragElement(elem, svgDiv, editTextContainer) {
     console.log(elem);
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     console.log("Pos1: " + pos1 + ", Pos2 :" + pos2 + ", Pos3: " + pos3 + ", Pos4: " + pos4);
-    if (document.getElementById(elem.id + "header")) {
-        var header = document.getElementById(elem.id + "header");      
+    var header = $(elem).find(".tb-div-header").first()[0];// document.getElementsByClassName("tb-div-header")[0];
+    console.log("Header");
+    console.log(header);
+
+    if (header) {//ById(elem.id + "header")) {
+        //var header = document.getElementById(elem.id + "header");      
             header.onmousedown = dragMouseDown;
             console.log(header);
     } else {

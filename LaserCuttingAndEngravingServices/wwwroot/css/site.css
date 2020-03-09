@@ -124,6 +124,14 @@ svg {
     top: 0px;
 }
 
+.editing-status {
+    position: absolute;
+    top: 0px;
+    left: 4px;
+    opacity: .5;
+    font-size: 9px;
+}
+
 .DisplayEditToolsButton {
     border-radius: 5px;
     border: 1px solid darkgrey;
@@ -131,9 +139,10 @@ svg {
     text-align: center;
     width: 100px;
     position: absolute;
-    top: 15px;
+    top: 20px;
     left: 55px;
     visibility: hidden; 
+    font-size: 11px;
 
     
 }
@@ -166,10 +175,9 @@ svg {
     color: #000;
 }
 
-.editable span {
-    border: dotted 1px black;    
+.editable {    
     background: transparent;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 12px;
     max-height: 8px;
     padding: -2px;
@@ -179,22 +187,104 @@ svg {
 }
 
 
-.editable p {
-    border: dotted 1px black;
+
+.editing-no-focus-start {
+    font-size: 15px;
+    font-style: italic;
+    color: grey;
+    line-height: 12px;
+    max-height: 8px;
+    padding: -2px;
+    margin: -2px;
+    white-space: pre-line;
+    text-align: center;
+    background-color: rgba(255,255,0,1);
+    border: .5px dotted rgb(200,200,0);
+    animation-name: flashing;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.editing-no-focus {
+    font-size: 15px;
+    font-style: normal;    
+    color: black;    
+    line-height: 12px;
+    max-height: 8px;
+    padding: -2px;
+    margin: -2px;
+    white-space: pre-line;
+    text-align: center;
+    background-color: rgba(255,255,0,1);
+    border: .5px dotted rgb(200,200,0);
+    animation-name: flashing;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+/* this is used by editing-no-focus class */
+@keyframes flashing {
+    0% {
+        background-color: rgba(255, 255, 0, 1);
+    }
+    14% {
+        background-color: rgba(255, 255, 0, .8);
+    }
+    29% {
+        background-color: rgba(255, 255, 0, .6);
+    }
+    43% {
+        background-color: rgba(255, 255, 0, .4);
+    }
+    57% {
+        background-color: rgba(255, 255, 0, .2);
+    }
+    71% {
+        background-color: rgba(255, 255, 0, .4);
+    }
+    86% {
+        background-color: rgba(255, 255, 0, .8);
+    } 
+    100% {
+        background-color: rgba(255, 255, 0, 1);
+    }
+}
+
+
+.editing-focus-no-input-start {
+    font-size: 15px;
+    font-style: italic;
+    color: grey;
+    background-color: rgba(255, 255, 0, 1);
+    border: .5px dashed black;
+}
+
+.editing-focus-no-input {
+    background-color: rgba(255, 0, 255, 0.5);
+    border: .5px dashed black;
+}
+
+.editing-focus-input {
+    /*color:  transparent;*/
+    border: .5px dashed black;
+}
+
+.editing-focus-input-keydown {
+    color: black;           /* this will be set to tyhe color of the user selction*/
+    border: .5px dashed black;
+}
+
+.editable .MouseDown {
     background: transparent;
-    font-size: 18px;
-    line-height: 18px;
-    width: 100px;
-    margin: auto;
-    /*white-space: pre-line;*/
-    /*  text-align: center;*/
+    border: .5px dashed black;
 }
 
 .editable .editing {
     border: dashed;
 }
 
-.editable div {
+.edit-text-container {
     max-width: 200px; 
 }
 
@@ -219,6 +309,8 @@ svg {
     /*margin-top: 0%;*/
     margin-bottom: 20px;
 }
+
+
 /* trying and arrow instead of edit-line */
 .arrow {
     stroke: rgb(0,0,0);

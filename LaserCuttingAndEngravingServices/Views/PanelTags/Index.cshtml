@@ -7,8 +7,6 @@
 
 <h1>Panel Tags</h1>
 
-<button id="btnDisplayEditTools2" class="displayEditToolsButton">Edit</button>
-
 <label for="selPlateDimenions">Select Dimensions (W x H):</label>
 <select id="selPlateDimensions">
     <option value="1,1">1" x 1"</option>
@@ -63,40 +61,6 @@
     <option value="#ffffff" style="background: white;" selected>white</option>
 </select>
 
-<!-- Start Clonable invisible elements -->
-
-<input id="inpLine" class="text-input" style="visibility: collapse" type="text" />
-
-<br />
-
-<select id="selFontSize" style="visibility: collapse">
-    <option value="6" style="font-size: 6px">6</option>
-    <option value="8" style="font-size: 8px">8</option>
-    <option value="10" style="font-size: 10px">10</option>
-    <option value="11" style="font-size: 11px">11</option>
-    <option value="12" style="font-size: 12px">12</option>
-    <option value="14" style="font-size: 14px">14</option>
-    <option value="16" style="font-size: 16px">16</option>
-    <option value="18" style="font-size: 18px">18</option>
-</select>
-
-
-<br />
-
-<select id="selFontFamily" style="visibility: collapse; width: 100px" title="Fonts">
-    <option style="font-family: Arial; font-style: italic; color: white; background-color: fuchsia" disabled selected>Select Font</option>
-    <option style="font-family: Arial; background-color: white; font-style: normal">Arial</option>
-    <option style="font-family: Courier New; background-color: white; font-style: normal">Courier New</option>
-    <option style="font-family: Times New Roman; background-color: white; font-style: normal">Times New Roman</option>
-</select>
-
-<br />
-<div id="dvVertCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
-<div id="dvHorzCenter" style="visibility:collapse"><button style="height: 25px; width: 24px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
-
-
-<!-- End Clonable invisible elements -->
-
 
 <div class="row">
     <div class="col-md-6" style="border-width: .5px; border-style: solid; min-height: 50px;">
@@ -105,58 +69,61 @@
 
             <tbody>
             </tbody>
-        </table>
+        </table> 
     </div>
     <div class="col-md-6">
         <!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
         <div id="dvSVGContainer" style="border-style: solid; color: rebeccapurple; border-width: 0.5px;">
             <div id="tbdiv" class="text-edit">
+                <div class="editing-status">
+                    <label>ES:</label>&nbsp;
+                    <span>Not Started</span>
+                </div>
                 <table>
                     <tr class="trEditTools">
-                        @*<td>
-                    &nbsp;&nbsp;
-                </td>*@
                         <td class="tdEditTools" style="vertical-align:central;text-align: center;">
-                            <div class="divEditTools" style="border-radius: 6px; border: 1px solid fuchsia; background-color: fuchsia; text-align: center; height: 35px; vertical-align: central; padding-top: 3px;">
-                                <button class="DisplayEditToolsButton">Edit</button>
+                            <div class="edit-tools-div" style="border-radius: 6px; border: 1px solid fuchsia; background-color: fuchsia; text-align: center; height: 35px; vertical-align: central; padding-top: 3px;">
+                                <button class="DisplayEditToolsButton">Click To Edit</button>
+                                <select class="font-size-sel EditTool" style="visibility: collapse; margin: auto;">
+                                    <option value="6" style="font-size: 6px">6</option>
+                                    <option value="8" style="font-size: 8px">8</option>
+                                    <option value="10" style="font-size: 10px">10</option>
+                                    <option value="11" style="font-size: 11px">11</option>
+                                    <option value="12" style="font-size: 12px">12</option>
+                                    <option value="14" style="font-size: 14px">14</option>
+                                    <option value="16" style="font-size: 16px">16</option>
+                                    <option value="18" style="font-size: 18px">18</option>
+                                </select>
+                                <select class="font-family-sel EditTool" style="visibility: collapse; width: 100px; margin: auto;" title="Fonts">
+                                    <option style="font-family: Arial; font-style: italic; color: white; background-color: fuchsia" disabled selected>Select Font</option>
+                                    <option style="font-family: Arial; background-color: white; font-style: normal">Arial</option>
+                                    <option style="font-family: Courier New; background-color: white; font-style: normal">Courier New</option>
+                                    <option style="font-family: Times New Roman; background-color: white; font-style: normal">Times New Roman</option>
+                                </select>
+                                <div class="vert-center-div EditTool" style="visibility:collapse; margin: auto; display: inline-block;"><button style="height: 25px; width: 24px; background: no-repeat url(/img/vertical_align_center.png);" />&nbsp;</div>
+                                <div class="horz-center-div EditTool" style="visibility:collapse; margin: auto; display: inline-block;"><button style="height: 25px; width: 24px; background: no-repeat url(/img/horizontal_align_center.png);" />&nbsp;</div>
                             </div>
-                            @*<div class="divDisplayEditTools">
-                                <button class="DisplayEditToolsButton">Edit</button>
-                            </div>*@
                         </td>
                     </tr>
                     <tr>
-                        @*<td style="justify-content: right;">
-
-                </td>
-                <td>
-                </td>*@
                         <td>
-                            <div id="editTextContainer" class="editable" style="font-size: 18px; font-family: Courier New; text-align: center; border: .5px dashed orange; width: 250px;margin-left: -20px;">
+                            <div id="editTextContainer" class="edit-text-container" style="font-size: 18px; font-family: Courier New; text-align: center; border: .5px dashed orange; width: 250px;margin-left: -20px;">
                                 <table style="border: solid .3px red; display: inline-table;padding: 0px;">
                                     <tr style="padding: 0px; margin: 0px;">
                                         <td>
-                                            <div id="tbdivheader">
+                                            <div class="tb-div-header">
                                                 <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid;" />
                                             </div>
                                         </td>
                                         <td style="padding: 0px; margin: 0px;">
-                                            <span class="editable" contenteditable="true" id="txt" style="border: .5px dashed black;">Koo</span>
+                                            <span class="editable-create" contenteditable="true">(Enter&nbsp;Text)</span>
                                         </td>
                                     </tr>
                                 </table>
-
                             </div>
                         </td>
                     </tr>
                 </table>
-                @*<table style="width: 100%; border-width: .5px; border-style: solid; border-color:black;">
-            <tr>
-                <td id="divLeftAlign"><img src="~/img/left-alignment.svg" class="text-alignment" /></td>
-                <td id="divCenterAlign"><img src="~/img/center-alignment.svg" class="text-alignment" /></td>
-                <td id="divRightAlign"><img src="~/img/right-alignment.svg" class="text-alignment" /></td>
-            </tr>
-        </table>*@
             </div>
         </div>
     </div>
@@ -290,24 +257,11 @@
             //#endregion background selection
 
             //#region font selection
-            function cloneSelFontFamily(num) {
-                var selFontFamilyClone = $("#selFontFamily").clone();
-                selFontFamilyClone.css("visibility", "visible");
-                var selFontFamilyId = "selFontFamily" + num;
-                selFontFamilyClone.attr("id", selFontFamilyId);
-
+            function initSelFontFamily(selFontFamilyClone) {                
                 initFirstOption(selFontFamilyClone);
                 selFontFamilyClone[0].addEventListener("change", function () {
-                    setSelFontFamily(selFontFamilyId);
-
-                });
-                /*$("#" + selFontFamilyId).change(function () {
-                    setSelFontFamily(selFontFamilyId);
-                    console.log("change selfamilyid");
-                });*/
-
-                return selFontFamilyClone;
-
+                    setSelFontFamily(selFontFamilyClone);
+                });                
             }
 
             var orgFontStyle;
@@ -328,104 +282,28 @@
                 $(selFontFamilyClone).css("background-color", "fuchsia");
             }
 
-            function setSelFontFamily(selFontFamilyId) {
-                var option = $("#" + selFontFamilyId).find('option:selected');//.attr('value');
-                var fontFamily = document.getElementById(selFontFamilyId).value;// $(option).attr('value');
+            function setSelFontFamily(selFontFamilyClone) {                
+                var fontFamily = $(selFontFamilyClone).find('option:selected').text();
                 console.log("Font family: " + fontFamily);
                 console.log("Select ID: ");
-                console.log($("#" + selFontFamilyId));
+                console.log($(selFontFamilyClone));
 
 
-                $("#" + selFontFamilyId).css('font-family', fontFamily);
-                $("#" + selFontFamilyId).css("font-style", orgFontStyle);
-                $("#" + selFontFamilyId).css("opacity", orgOpacity);
-                $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
-                // $("#" + selFontFamilyId).css("background-color", orgBackgroundColor);
+                $(selFontFamilyClone).css('font-family', fontFamily);
+                $(selFontFamilyClone).css("font-style", orgFontStyle);
+                $(selFontFamilyClone).css("opacity", orgOpacity);
+                $(selFontFamilyClone).css("background-color", orgBackgroundColor);                
             }
             //#endregion font selection
 
             //#region addlines
             $("#btnAddLine").click(function () {
-                console.log("btn clicked");
-                //$("#")
-                var rowCount = $('#tblLines tr').length;
-
-                // create the new row with id
-                var newRow = document.createElement("tr");
-                var newRowId = "inp" + (rowCount + 1);
-                var newTextBoxId = "txt" + (rowCount + 1);
-                newRow.setAttribute("id", newRowId);
-
-                // the specs/parameters
-                var selFontSizeClone = $("#selFontSize").clone();
-                selFontSizeClone.css("visibility", "visible");
-                selFontSizeClone.css("margin", "auto");
-                selFontSizeClone.addClass("EditTool");
-
-                var selFontFamilyClone = cloneSelFontFamily(rowCount + 1);// $("#selFontFamily").clone();
-                selFontFamilyClone.css("visibility", "visible");
-                selFontFamilyClone.css("margin", "auto");
-                selFontFamilyClone.addClass("EditTool");
-
-                var dvVertCenterClone = $("#dvVertCenter").clone();
-                dvVertCenterClone.css("visibility", "visible");
-                dvVertCenterClone.css("display", "inline-block");
-                dvVertCenterClone.css("margin", "auto");
-                dvVertCenterClone.addClass("EditTool");
-
-                var dvHorzCenterClone = $("#dvHorzCenter").clone();
-                dvHorzCenterClone.css("visibility", "visible");
-                dvHorzCenterClone.css("display","inline-block");
-                dvHorzCenterClone.css("margin", "auto");
-                dvHorzCenterClone.addClass("EditTool");
-
-                var inpLineClone = $("#inpLine").clone();
-                inpLineClone.css("visibility", "visible");
-                var inpLineCloneId = "inpLine" + rowCount;
-                inpLineClone.attr("id", inpLineCloneId);
-                inpLineClone.addClass("EditTool");
-
-                //var btnDisplayEditToolsClone = $("#btnDisplayEditTools2").clone();
-                //btnDisplayEditToolsClone.css("visibility", "visible");
-                //var btnDisplayEditToolsId = "btnDisplayEditTools" + rowCount;
-                //btnDisplayEditToolsClone.attr("id", btnDisplayEditToolsId);
-
-                // end the specs/parameters
-
-                $(newRow).append("<td></td><td></td><td></td><td></td><td></td>")
-                $("#tblLines > tbody:last-child").append(newRow);
-
-                //$("#" + newRowId + " td:nth-child(2)").append(selFontSizeClone);
-                //$("#" + newRowId + " td:nth-child(3)").append(selFontFamilyClone);
-                //$("#" + newRowId + " td:nth-child(4)").append(dvVertCenterClone);
-                //$("#" + newRowId + " td:nth-child(5)").append(dvHorzCenterClone);
-                $("#" + newRowId + " td:nth-child(1)").append(inpLineClone);
-
-
-
-                // making a height adjustment so all elements are about the same size
-                console.log("selfontfanilyClone height: " + $(selFontFamilyClone).height());
-                $(inpLineClone).css("height", $(selFontFamilyClone).height() + 4);
-
-                $(inpLineClone).keyup(function (event) {
-                    console.log("keyup");
-                    console.log(this);
-                    vectorEditor.setTextBoxContent($(this).val(), newTextBoxId);
-
-                });
-                // create an instance of the input text box and add it to the SVG editor
-
+                // above code is no longer usedx
                 var textEditClone = $("#tbdiv").clone();
-               
-                $(textEditClone).find(".divEditTools").append(selFontSizeClone);
-                $(textEditClone).find(".divEditTools").append(selFontFamilyClone);               
-                $(textEditClone).find(".divEditTools").append(dvVertCenterClone);
-                $(textEditClone).find(".divEditTools").append(dvHorzCenterClone);
-               // $(textEditClone).find(".divEditTools").append(btnDisplayEditToolsClone);
-                var svgDiv = $("#dvSVGContainer");
+                var svgDiv = $("#dvSVGContainer");                 
 
-
-                vectorEditor.createTextBox(rowCount + 1, textEditClone, svgDiv);
+                initSelFontFamily($(textEditClone).find(".font-family-sel"));
+                vectorEditor.createTextBox(0, textEditClone, svgDiv);
             });
 
 
