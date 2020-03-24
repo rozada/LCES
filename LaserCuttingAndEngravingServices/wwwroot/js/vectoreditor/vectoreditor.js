@@ -1,16 +1,43 @@
+// SET CURSOR POSITION
+$.fn.setCursorPosition = function (pos) {
+    this.each(function (pos, elem) {
+        if (elem.setSelectionRange) {
+            elem.setSelectionRange(pos, pos);
+        }
+        else if (elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+
+    });
+
+    return this;
+};
+
 
 (function (global) {
     var svgns = "http://www.w3.org/2000/svg";
 
     // Edit States
-    var PromptEdit = "PromptEdit";
-    var PromptEditLeave = "PromptEditLeave";
-    var EditingNoFocus = "EditingNoFocus";
-    var EditingFocusNoInput = "EditingFocusNoInput";
-    var EditingFocusInput = "EditingFocusInput";
-    var EditingFocusInputKeyDown = "EditingFocusInputKeyDown";
-    var Editing = "Editing";//{ Name: "Editing", Value: 2 };
-    var Save = "Save";//{ Name: "Save", Value: 3 };
+    var EditableCreate = "EditableCreate - 0";
+
+    var EditingNoFocus_I = "EditingNoFocus_I(1)"
+    var EditingNoFocus = "EditingNoFocus(2)";
+
+    var EditingFocusNoInput_I = "EditingFocusNoInput_I(3)";
+    var EditingFocusNoInput = "EditingFocusNoInput(4)";
+
+    var EditingFocusInput = "EditingFocusInput(5)";
+
+    var EditingFocusInputKeyDown_I = "EditFocusInputKeyDown_I(6)";
+    var EditingFocusInputKeyDown = "EditingFocusInputKeyDown(7)";
+    var Editing = "Editing(8)";
+    var Save = "Save(9)";
+    var PromptEdit = "PromptEdit(10)";
+    var PromptEditLeave = "PromptEditLeave(11)";
 
     // VectorEditor constructor
     function VectorEditor() {
@@ -85,55 +112,7 @@
 
     //#region textbox methods
 
-    VectorEditor.prototype.setEditToolsStatus = function (textEdit, divEditTools, btnDisplayEditTools, status, self, statusSpan) {
-        if (!self) {
-            self = this;
-        }
-
-        if (
-            status === PromptEdit && textEdit.Status === Editing  // we are already editing, so need need to prompt for it
-            ) {
-            return;
-        }
-
-        textEdit.Status = status;//parseInt(status, 10);
-        console.log("Status span: " + statusSpan);
-        $(statusSpan).text(status);
-
-        switch (status) {
-            case PromptEdit:                
-
-                console.log("PromptEdit");
-                self.showEditTools(divEditTools, false, true);
-                //btnDisplayEditTools.css("visibility", "visible");
-
-                //divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
-                break;
-            case PromptEditLeave:
-                break;
-
-            case EditingNoFocus:
-                console.log("Editing mode");
-                self.showEditTools(divEditTools, true, false);
-                break;
-            case EditingFocusNoInput:
-                console.log(EditingFocusNoInput);
-                break;
-            case EditingFocusInput:
-                console.log(EditingFocusInput);
-                break;
-            case Save:
-                console.log("Save mode");
-                self.showEditTools(divEditTools, false, false);
-                
-                //btnDisplayEditTools.css("visibility", "hidden");
-                break;
-            default:
-                break;
-
-
-        }
-    }
+  
 
     VectorEditor.prototype.showEditTools = function (container, show, showDisplayEditToolsButton) {
         if (show) {    
@@ -190,6 +169,7 @@
         var editBoxJQ = $(textEdit).find(".editable-create");    
         var statusSpan = $(textEdit).find(".editing-status span");     
         console.log("status span1:" + statusSpan);
+  
         console.log(editBoxJQ);
 
         //#region divEditTools
@@ -198,7 +178,7 @@
         //Working on the BLUR STILL
         $(divEditTools).mouseleave(function () {
             console.log("The blur");
-            divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 4000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                
+           // divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 4000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                
         });
 
         $(divEditTools).mousemove(function () {
@@ -216,30 +196,51 @@
             //$(this)[0].className += " MouseOver";//.addClass("mouseover");
             //console.log($(this)[0]);
             //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingFocusNoInput);
-            setEditingStatus(EditingFocusNoInput);
+            if (textEdit.Status == EditingNoFocus_I) {
+                setEditingStatus(EditingFocusNoInput_I);
+            }
+            else {
+                setEditingStatus(EditingFocusNoInput);
+            }
         });
 
         $(editBoxJQ).mousedown(function () {
-            setEditingStatus(EditingFocusInput);
+            if (textEdit.getStatus === EditingFocusNoInput_I) {
+                setEditingStatus(EditingFocusInput);
+            }
+         
             //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
         });
 
         $(editBoxJQ).keydown(function (e) {
-           
-            setEditingStatus(EditingFocusInputKeyDown, e);
+            var first = true;
+            console.log("keydown " + first);
+            if (first) {
+                setEditingStatus(EditingFocusInputKeyDown_I, e);
+            }
+            else {
+                setEditingStatus(EditingFocusInputKeyDown, e);
+            }
         });
 
         $(editBoxJQ).mouseleave(function () {
             console.log("mouse leave");
-            if (textEdit.Status === PromptEdit) {
+            if (textEdit.IsDirty) {
+                setEditingStatus(EditingNoFocus);
+            }
+            else {
+                setEditingStatus(EditingNoFocus_I);
+            }
+
+           /* if (textEdit.Status === PromptEdit) {
                 // start a timer which can only be deactivated from within promptEdit. It is attached to divEditTools                
                 divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 500, textEdit, divEditTools, btnDisplayEditTools, Save, self);
-            }
+            }*/
         });
 
         $(editBoxJQ).focusout(function () {
             console.log("focus out");
-            $(this).removeClass("MouseDown");
+           // $(this).removeClass("MouseDown");
         });
         //#endregion editBox
         //#region btnDisplayEditTools
@@ -254,53 +255,51 @@
         btnDisplayEditTools.click(function (e) {
             console.log("found edit tools button");
             /* CLEAR ANY EXISTING TIMERS HERE */
-            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);
+           // self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);
         });
 
         //#endregion btnDisplayEditTools            
 
         // Start of in editing but without focus or input
         //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);   
-        setEditingStatus(EditingNoFocus);
-        divEditTools[0].timer = setTimeout(function () {            
-            self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Save, self, statusSpan);   
-        }, 1000);  // ** change back to 4000 after testing
+        setEditingStatus(EditingNoFocus_I);
+        //divEditTools[0].timer = setTimeout(function () {            
+        //    self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Save, self, statusSpan);   
+        //}, 1000);  // ** change back to 4000 after testing
 
         function setEditingStatus(status, sender) {
             textEdit.Status = status;
             $(statusSpan).text(status);
+            console.log("Editing Status: " + status);
             switch (status) {
-                case PromptEdit:
-
-                    console.log("PromptEdit");
-                    self.showEditTools(divEditTools, false, true);
-                    //btnDisplayEditTools.css("visibility", "visible");
-
-                    //divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
+               
+                case EditingNoFocus_I:
+                    $(editBoxJQ).removeClass();
+                    $(editBoxJQ).addClass("editing-no-focus-start");
+                    self.showEditTools(divEditTools, true, false);
                     break;
                 case EditingNoFocus:
                     console.log("EditingNoFocus");
+                    $(editBoxJQ).removeClass();
+                    $(editBoxJQ).addClass("editing-no-focus");
                     self.showEditTools(divEditTools, true, false);
-                    if ($(editBoxJQ).hasClass("editable-create")) {
-                        $(editBoxJQ).removeClass("editable-create");
-                        $(editBoxJQ).addClass("editing-no-focus-start");
-                    }
-                    else {
-                        $(editBoxJQ).addClass("editing-no-focus");
-                    }
-                    console.log(editBoxJQ[0].className);
                     break;
-                case EditingFocusNoInput:
-                    if ($(editBoxJQ).hasClass("editing-no-focus-start")) {
-                        $(editBoxJQ).removeClass("editing-no-focus-start");
-                        $(editBoxJQ).addClass("editing-focus-no-input-start");
-                    }
-                    else if ($(editBoxJQ).hasClass("editing-no-focus")) {
-                        $(editBoxJQ).removeClass("editing-no-focus");
-                        $(editBoxJQ).addClass("editing-focus-no-input");
-                    }
+                case EditingFocusNoInput_I:
+                    $(editBoxJQ).removeClass("");
+                    $(editBoxJQ).addClass("editing-focus-no-input-start");
                     break;
-                case EditingFocusInput:
+                case EditingFocusNoInput:                  
+                    $(editBoxJQ).removeClass();
+                    $(editBoxJQ).addClass("editing-focus-no-input");
+                    // reset timer to transition to Save Status
+                   //if (divEditTools[0].timer) {
+                   //     clearTimeout(divEditTools[0].timer);
+                   // }
+                   // divEditTools[0].timer = setTimeout(function () {
+                   //     setEditingStatus(Save);
+                   // }, 3000);
+                    break;
+                case EditingFocusInput:  // called by mousedown
                     if (!$(editBoxJQ).hasClass("editing-focus-input")) {
                         $(editBoxJQ).removeClass("");
                         $(editBoxJQ).addClass("editing-focus-input");
@@ -310,31 +309,63 @@
                             //self.triggerMouseEvent(editBoxJQ[0], "focus");
                             console.log("heard click");
                             console.log(window.getSelection());
+                            //editBoxJQ[0].select(0);
                             self.placeCaretAtEnd(editBoxJQ[0]);
+                            //$(editBoxJQ).setCursorPosition(0);
                         });
                         var e = new jQuery.Event("mousedown");
                         e.pageX = 3;
                         e.pageY = 3;
                         $(editBoxJQ).trigger(e);
                         //
-                        //self.triggerMouseEvent(editBoxJQ[0], "click");
-                        
+                        //self.triggerMouseEvent(editBoxJQ[0], "click");                      
                     }
                     else { 
                         console.log("mousedown");
-                    }
-                    
+                        // reset timer to transition to Save Status
+                        /*if (divEditTools[0].timer) {
+                            console.log("Clear timer");
+                            clearTimeout(divEditTools[0].timer);
+                        }
+                        divEditTools[0].timer = setTimeout(function () {
+                            setEditingStatus(Save);
+                        }, 3000);*/
+                    }                    
                     break;
-                case EditingFocusInputKeyDown:
+                //case EditingFocusInput:
+                //    break;
+
+                case EditingFocusInputKeyDown_I:
                     if (!$(editBoxJQ).hasClass("editing-focus-input-keydown")) {  // this only gets called once to remove the placeholder text
                         console.log("EditingFocusInputKeyDown");
                         console.log(sender.key);
                         $(editBoxJQ).width(50);
                         $(editBoxJQ).text("");
+                    }
+
+                case EditingFocusInputKeyDown:
                         $(editBoxJQ).removeClass("");
                         $(editBoxJQ).addClass("editing-focus-input-keydown");
 
+                    
+                    // reset timer to transition to Save Status
+                    if (divEditTools[0].timer) {
+                        clearTimeout(divEditTools[0].timer);
                     }
+                    divEditTools[0].timer = setTimeout(function () {
+                        setEditingStatus(Save);
+                    }, 3000);
+                    break;
+                case Save:
+                    self.showEditTools(divEditTools, false, false);
+                    break;
+                case PromptEdit:
+
+                    console.log("PromptEdit");
+                    self.showEditTools(divEditTools, false, true);
+                    //btnDisplayEditTools.css("visibility", "visible");
+
+                    //divEditTools[0].timer = setTimeout(self.setEditToolsStatus, 2000, textEdit, divEditTools, btnDisplayEditTools, Save, self);                              
                     break;
                 default:
                     break;
@@ -393,16 +424,32 @@
         el.focus();
         if (typeof window.getSelection != "undefined"
             && typeof document.createRange != "undefined") {
+            
             var range = document.createRange();
             range.selectNodeContents(el);
-            range.collapse(false);
-            var sel = window.getSelection();
-            sel.removeAllRanges();
+            range.collapse(false);            
+            range.setStart(el, 0);
+            range.setEnd(el, 0);
+            console.log("rnage");
+            console.log(range);
+
+            var sel = window.getSelection();            
+            console.log(sel);
+
+            sel.removeAllRanges();            
+            console.log(sel);
+
+            
             sel.addRange(range);
-        } else if (typeof document.body.createTextRange != "undefined") {
+            console.log("selection");
+            console.log(sel);
+
+        } else if (typeof document.body.createTextRange != "undefined") {  // this only works in IEf, although IE11 tends to choose the code above
             var textRange = document.body.createTextRange();
             textRange.moveToElementText(el);
             textRange.collapse(false);
+            console.log("textrange");
+            console.log(textRange)
             textRange.select();
         }
     }
