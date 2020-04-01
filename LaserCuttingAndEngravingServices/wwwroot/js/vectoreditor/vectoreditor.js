@@ -31,13 +31,12 @@ $.fn.setCursorPosition = function (pos) {
     var EditingFocusNoInput = "EditingFocusNoInput(4)";
 
     var EditingFocusInput = "EditingFocusInput(5)";
-
-    var EditingFocusInputKeyDown_I = "EditFocusInputKeyDown_I(6)";
-    var EditingFocusInputKeyDown = "EditingFocusInputKeyDown(7)";
-    var Editing = "Editing(8)";
-    var Save = "Save(9)";
-    var PromptEdit = "PromptEdit(10)";
-    var PromptEditLeave = "PromptEditLeave(11)";
+    
+    var EditingFocusInputKeyDown = "EditingFocusInputKeyDown(6)";
+    var Editing = "Editing(7)";
+    var Save = "Save(8)";
+    var PromptEdit = "PromptEdit(9)";
+    var PromptEditLeave = "PromptEditLeave(10)";
 
     // VectorEditor constructor
     function VectorEditor() {
@@ -169,7 +168,11 @@ $.fn.setCursorPosition = function (pos) {
         var editBoxJQ = $(textEdit).find(".editable-create");    
         var statusSpan = $(textEdit).find(".editing-status span");     
         console.log("status span1:" + statusSpan);
+
+        /*** These will be the values from the editor div - hardcoded for now */
         textEdit.font = "normal 15px arial"; 
+        textEdit.color = "black";
+        textEdit.background = "transparent";
   
         console.log(editBoxJQ);
 
@@ -191,35 +194,34 @@ $.fn.setCursorPosition = function (pos) {
         });
         //#endregion divEditTools
         //#region editBox
-        $(editBoxJQ).mouseover(function () {
+        $(editBoxJQ).mouseover(function (e) {
             //console.log("mouseover");
             //console.log($(this));
             //$(this)[0].className += " MouseOver";//.addClass("mouseover");
             //console.log($(this)[0]);
             //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingFocusNoInput);
             if (textEdit.status == EditingNoFocus_I) {
-                setEditingStatus(EditingFocusNoInput_I);
+                setEditingStatus(EditingFocusNoInput_I, e.type, "editBoxJQ");
             }
             else {
-                setEditingStatus(EditingFocusNoInput);
+                setEditingStatus(EditingFocusNoInput, e.type, "editBoxJQ"  );
             }
         });
 
         $(editBoxJQ).mousedown(function () {
-            if (textEdit.status === EditingFocusNoInput_I) {
+            //if (textEdit.status === EditingFocusNoInput_I) {
                 setEditingStatus(EditingFocusInput);
-            }
+            //}
          
             //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
         });
 
-        $(editBoxJQ).keydown(function (e) {
-            
-            if (textEdit.isDirty) {
+        $(editBoxJQ).keydown(function (e) {     
+            if (e.key !== "Enter") {
                 setEditingStatus(EditingFocusInputKeyDown, e);
             }
             else {
-                setEditingStatus(EditingFocusInputKeyDown_I, e);
+                e.preventDefault();
             }
         });
 
@@ -262,21 +264,31 @@ $.fn.setCursorPosition = function (pos) {
 
         // Start of in editing but without focus or input
         //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);   
-        setEditingStatus(EditingNoFocus_I);
+        setEditingStatus(EditingNoFocus_I, "_start");
         //divEditTools[0].timer = setTimeout(function () {            
         //    self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Save, self, statusSpan);   
         //}, 1000);  // ** change back to 4000 after testing
 
-        function setEditingStatus(status, sender) {
+        function setEditingStatus(status, eventDesc,senderDesc ) {
             textEdit.prevStatus = textEdit.status;
             textEdit.status = status;
-            $(statusSpan).text(status);
-            console.log("Editing Status: " + status);
+
+            var output = "ST: " + status;
+            if (eventDesc) {
+                output = output + "; EVT:" + eventDesc;
+            }
+            if (senderDesc) {
+                output = output + "; SND:" + senderDesc;
+            }
+
+            $(statusSpan).text(output);
+            console.log("Editing Data: " + output);
+
             switch (status) {
                
                 case EditingNoFocus_I:
                     $(editBoxJQ).removeClass();
-                    $(editBoxJQ).addClass("editing-no-focus-start");
+                    $(editBoxJQ).addClass("editing-no-focus-I");
                     self.showEditTools(divEditTools, true, false);
                     break;
                 case EditingNoFocus:
@@ -287,7 +299,7 @@ $.fn.setCursorPosition = function (pos) {
                     break;
                 case EditingFocusNoInput_I:
                     $(editBoxJQ).removeClass("");
-                    $(editBoxJQ).addClass("editing-focus-no-input-start");
+                    $(editBoxJQ).addClass("editing-focus-no-input-I");
                     break;
                 case EditingFocusNoInput:                  
                     $(editBoxJQ).removeClass();
@@ -330,25 +342,29 @@ $.fn.setCursorPosition = function (pos) {
                         divEditTools[0].timer = setTimeout(function () {
                             setEditingStatus(Save);
                         }, 3000);*/
-                    }                    
+                    }   
+
+                    $(editBoxJQ).css("font", textEdit.font);
+                    $(editBoxJQ).css("color", textEdit.color);
+                    $(editBoxJQ).css("background", textEdit.background);
+                    //$(editBoxJQ).css("background-color", "rgb(0,0,0)");
                     break;
                 //case EditingFocusInput:
                 //    break;
 
-                case EditingFocusInputKeyDown_I:
-                    textEdit.isDirty = true;
-                    if (!$(editBoxJQ).hasClass("editing-focus-input-keydown")) {  // this only gets called once to remove the placeholder text
-                        console.log("EditingFocusInputKeyDown_I");
-                        console.log(sender.key);
+                case EditingFocusInputKeyDown:                    
+                    if (!textEdit.isDirty) {
+                        console.log("EditingFocusInputKeyDown - text not dirty");                
+                        textEdit.isDirty = true;                        
                         $(editBoxJQ).width(50);
                         $(editBoxJQ).text("");
-                    }
+                    }                
+                    $(editBoxJQ).removeClass("");
+                    $(editBoxJQ).addClass("editing-focus-input-keydown");
 
-                case EditingFocusInputKeyDown:
-                        $(editBoxJQ).removeClass("");
-                        $(editBoxJQ).addClass("editing-focus-input-keydown");
+                   
+                    console.log("key being sent: " + sender.key);
 
-                    $(editBoxJQ).css("font", textEdit.font);
                     // reset timer to transition to Save Status
                     if (divEditTools[0].timer) {
                         clearTimeout(divEditTools[0].timer);

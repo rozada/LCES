@@ -126,11 +126,13 @@ svg {
 
 .editing-status {
     position: absolute;
-    top: 0px;
+    top: -10px;
     left: 4px;   
     color: black;
     font-weight: bold;
     font-size: 9px;
+    width: 275px;
+    text-align: left;
 }
 
 .DisplayEditToolsButton {
@@ -189,7 +191,7 @@ svg {
 
 
 
-.editing-no-focus-start {
+.editing-no-focus-I {
     font-size: 15px;
     font-style: italic;
     color: grey;
@@ -253,23 +255,25 @@ svg {
 }
 
 
-.editing-focus-no-input-start {
+.editing-focus-no-input-I {
     font-size: 15px;
     font-style: italic;
     color: grey;
     background-color: rgba(255, 255, 0, .5);
     border: .5px dashed black;
+    animation-name: flashing;
 }
 
 .editing-focus-no-input {
     font-size: 15px;
     font-style: italic;
-    background-color: rgba(255, 255, 0, 0.5);
+    background: transparent;
     border: .5px dashed black;
+    animation-name: none;
 }
 
 .editing-focus-input {
-    /*color:  transparent;*/
+    color:  transparent;
     border: .5px dashed black;
 }
 
