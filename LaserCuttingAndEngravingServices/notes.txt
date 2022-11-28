@@ -15,3 +15,7 @@ EDITing capabiilites
 	Put al events and whether diry or not in the wstatus
 
 	Do the timed save last and for now focus on the manual events
+
+4/6/2020
+Change to hand cursor
+- The positioning doesn't work anymore.  Because we aren't using indexing for the text boxes.

@@ -82,6 +82,8 @@
 
         console.log("textInput:");
         console.log(textInput);
+
+        return;  /*  NOT SURE HOW THIS CODE *WAS* USED */
         //var rect = txt.getBoundingClientRect();
         var textInputOffset = $(textInput).offset();
         console.log("textInput offset: ");

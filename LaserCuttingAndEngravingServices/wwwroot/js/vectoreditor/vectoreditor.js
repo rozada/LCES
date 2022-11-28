@@ -35,6 +35,7 @@ $.fn.setCursorPosition = function (pos) {
     var EditingFocusInputKeyDown = "EditingFocusInputKeyDown(6)";
     var Editing = "Editing(7)";
     var Save = "Save(8)";
+
     var PromptEdit = "PromptEdit(9)";
     var PromptEditLeave = "PromptEditLeave(10)";
 
@@ -48,6 +49,7 @@ $.fn.setCursorPosition = function (pos) {
         var currentText = null;
         var rectWidth;
         var rectHeight;
+        var textEditArray = [];
         console.log("INIITED");
 
         $(svg).click(function () {
@@ -169,6 +171,13 @@ $.fn.setCursorPosition = function (pos) {
         var statusSpan = $(textEdit).find(".editing-status span");     
         console.log("status span1:" + statusSpan);
 
+        var tbDivHeader = $(textEdit).find(".tb-div-header");
+        console.log(tbDivHeader);
+        $(tbDivHeader).attr("data-toggle", "tooltip");
+        $(tbDivHeader).attr("data-placement","top");
+        $(tbDivHeader).attr("title", "Tooltip on top");
+        $(tbDivHeader).tooltip(); 
+
         /*** These will be the values from the editor div - hardcoded for now */
         textEdit.font = "normal 15px arial"; 
         textEdit.color = "black";
@@ -218,20 +227,20 @@ $.fn.setCursorPosition = function (pos) {
 
         $(editBoxJQ).keydown(function (e) {     
             if (e.key !== "Enter") {
-                setEditingStatus(EditingFocusInputKeyDown, e);
+                setEditingStatus(EditingFocusInputKeyDown, e.type, "editBoxJQ", [e.key]);
             }
             else {
                 e.preventDefault();
             }
         });
 
-        $(editBoxJQ).mouseleave(function () {
+        $(editBoxJQ).mouseleave(function (e) {
             console.log("mouse leave");
-            if (textEdit.IsDirty) {
-                setEditingStatus(EditingNoFocus);
+            if (textEdit.isDirty) {
+               // setEditingStatus(EditingNoFocus, e.type, "editBoxJQ");
             }
             else {
-                setEditingStatus(EditingNoFocus_I);
+                setEditingStatus(EditingNoFocus_I, e.type, "editBoxJQ");
             }
 
            /* if (textEdit.Status === PromptEdit) {
@@ -240,7 +249,8 @@ $.fn.setCursorPosition = function (pos) {
             }*/
         });
 
-        $(editBoxJQ).focusout(function () {
+        $(editBoxJQ).focusout(function (e) {
+            setEditingStatus(Save, e.type, "editBoxJQ");
             console.log("focus out");
            // $(this).removeClass("MouseDown");
         });
@@ -260,7 +270,12 @@ $.fn.setCursorPosition = function (pos) {
            // self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);
         });
 
-        //#endregion btnDisplayEditTools            
+        //#endregion btnDisplayEditTools        
+
+        //#region Tips
+      
+      
+        //#endregion Tips
 
         // Start of in editing but without focus or input
         //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, EditingNoFocus, self, statusSpan);   
@@ -269,7 +284,7 @@ $.fn.setCursorPosition = function (pos) {
         //    self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, Save, self, statusSpan);   
         //}, 1000);  // ** change back to 4000 after testing
 
-        function setEditingStatus(status, eventDesc,senderDesc ) {
+        function setEditingStatus(status, eventDesc,senderDesc, params ) {
             textEdit.prevStatus = textEdit.status;
             textEdit.status = status;
 
@@ -363,7 +378,7 @@ $.fn.setCursorPosition = function (pos) {
                     $(editBoxJQ).addClass("editing-focus-input-keydown");
 
                    
-                    console.log("key being sent: " + sender.key);
+                    console.log("key being sent: " + params[0]);
 
                     // reset timer to transition to Save Status
                     if (divEditTools[0].timer) {
@@ -373,9 +388,17 @@ $.fn.setCursorPosition = function (pos) {
                     //    setEditingStatus(Save);
                     //}, 3000);
                     break;
+
                 case Save:
+                    $(editBoxJQ).removeClass("");
+                    $(editBoxJQ).addClass("save");
+
                     self.showEditTools(divEditTools, false, false);
+
+                    // clear all timers
                     break;
+
+
                 case PromptEdit:
 
                     console.log("PromptEdit");
@@ -400,19 +423,20 @@ $.fn.setCursorPosition = function (pos) {
             editBoxJQ[0].removeEventListener("click", setEditCaret);
         }
 
-        $(textEdit).mousemove(function (e) {
-            //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
-            return;
+        //$(textEdit).mousemove(function (e) {
+        //    //self.setEditToolsStatus(textEdit, divEditTools, btnDisplayEditTools, PromptEdit);
+        //    return;
 
-            var rect = editBoxJQ[0].getBoundingClientRect();
-            //console.log(rect);
-            //console.log("X: " + e.clientX);
-            //console.log("Y: " + e.clientY);
-            var mousePoint = { x: e.clientX, y: e. clientY }
-            //console.log(e); 
-            self.isAtEdge(mousePoint, editBoxJQ, rect, svgDiv[0], editTextContainer);
-            console.log("Mousemove");
-        });
+        //    var rect = editBoxJQ[0].getBoundingClientRect();
+        //    //console.log(rect);
+        //    //console.log("X: " + e.clientX);
+        //    //console.log("Y: " + e.clientY);
+        //    var mousePoint = { x: e.clientX, y: e. clientY }
+        //    //console.log(e); 
+        //    return;
+        //    self.isAtEdge(mousePoint, editBoxJQ, rect, svgDiv[0], editTextContainer);
+        //    console.log("Mousemove");
+        //});
       
 
         //#region position the new line in the correct place

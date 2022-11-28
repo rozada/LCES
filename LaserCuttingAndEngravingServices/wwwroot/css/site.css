@@ -220,11 +220,11 @@ svg {
     white-space: pre-line;
     text-align: center;
     background-color: rgba(255,255,0,1);
-    border: .5px dotted rgb(200,200,0);
-    animation-name: flashing;
+    border: .5px dashed rgb(200,200,0);  /** removed dott4ed **/
+   /* animation-name: flashing;
     animation-duration: 2s;
     animation-timing-function: linear;
-    animation-iteration-count: infinite;
+    animation-iteration-count: infinite;*/
 }
 /* this is used by editing-no-focus class */
 @keyframes flashing {
@@ -269,12 +269,14 @@ svg {
     font-style: italic;
     background: transparent;
     border: .5px dashed black;
-    animation-name: none;
+    animation-name: none;  /* clear out any on going animations */
 }
 
 .editing-focus-input {
-    color:  transparent;
+    color: transparent;
+    background: transparent;
     border: .5px dashed black;
+    animation-name: none; /* clear out any on going animations */
 }
 
 .editing-focus-input-keydown {
@@ -342,6 +344,11 @@ svg {
     
     border-radius: 5px;
     background-color: fuchsia;
+}
+
+.save {
+    border: none;
+
 }
 
 /********Customn Controls *********/

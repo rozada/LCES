@@ -61,7 +61,6 @@
     <option value="#ffffff" style="background: white;" selected>white</option>
 </select>
 
-
 <div class="row">
     <div class="col-md-6" style="border-width: .5px; border-style: solid; min-height: 50px;">
         <button id="btnAddLine">Add Text Line</button>
@@ -69,13 +68,13 @@
 
             <tbody>
             </tbody>
-        </table> 
+        </table>
     </div>
     <div class="col-md-6">
         <!-- DPI IS 96 - NOT SURE IF THIS CAN BE CHANGED. -->
         <div id="dvSVGContainer" style="border-style: solid; color: rebeccapurple; border-width: 0.5px;">
             <div id="tbdiv" class="text-edit">
-                <div class="editing-status">                    
+                <div class="editing-status">
                     <span>Not Started</span>
                 </div>
                 <table>
@@ -110,7 +109,7 @@
                                 <table style="border: solid .3px red; display: inline-table;padding: 0px;">
                                     <tr style="padding: 0px; margin: 0px;">
                                         <td>
-                                            <div class="tb-div-header">
+                                            <div class="tb-div-header" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
                                                 <img src="~/img/move-cursor.svg" style="width:15px; height: 15px; border-width: .5px; border-style: solid;" />
                                             </div>
                                         </td>
@@ -126,6 +125,13 @@
             </div>
         </div>
     </div>
+</div>
+<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+    Tooltip on top
+</button>
+<div  data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+    Hover over me
+    @*<span class="tooltiptext">Tooltip text</span>*@
 </div>
 
 <svg height="24" width="30" style="border: none">
@@ -256,11 +262,11 @@
             //#endregion background selection
 
             //#region font selection
-            function initSelFontFamily(selFontFamilyClone) {                
+            function initSelFontFamily(selFontFamilyClone) {
                 initFirstOption(selFontFamilyClone);
                 selFontFamilyClone[0].addEventListener("change", function () {
                     setSelFontFamily(selFontFamilyClone);
-                });                
+                });
             }
 
             var orgFontStyle;
@@ -281,7 +287,7 @@
                 $(selFontFamilyClone).css("background-color", "fuchsia");
             }
 
-            function setSelFontFamily(selFontFamilyClone) {                
+            function setSelFontFamily(selFontFamilyClone) {
                 var fontFamily = $(selFontFamilyClone).find('option:selected').text();
                 console.log("Font family: " + fontFamily);
                 console.log("Select ID: ");
@@ -291,7 +297,7 @@
                 $(selFontFamilyClone).css('font-family', fontFamily);
                 $(selFontFamilyClone).css("font-style", orgFontStyle);
                 $(selFontFamilyClone).css("opacity", orgOpacity);
-                $(selFontFamilyClone).css("background-color", orgBackgroundColor);                
+                $(selFontFamilyClone).css("background-color", orgBackgroundColor);
             }
             //#endregion font selection
 
@@ -299,7 +305,7 @@
             $("#btnAddLine").click(function () {
                 // above code is no longer usedx
                 var textEditClone = $("#tbdiv").clone();
-                var svgDiv = $("#dvSVGContainer");                 
+                var svgDiv = $("#dvSVGContainer");
 
                 initSelFontFamily($(textEditClone).find(".font-family-sel"));
                 vectorEditor.createTextBox(0, textEditClone, svgDiv);
@@ -362,7 +368,7 @@
             //    }
             //});
         });
-                                                /********  END TEST CODE **********/
+                                                    /********  END TEST CODE **********/
     </script>
 
 }
